@@ -1,0 +1,3 @@
+inesc;inesc;Inês Costa
+loucar;loucar;Lourenço Carvalho
+pedrot;pedrot;Pedro Tavares
