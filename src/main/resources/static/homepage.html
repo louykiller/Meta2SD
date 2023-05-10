@@ -96,7 +96,7 @@
 
             }
             .total {
-                background-color: rgba(0, 0, 0, 0.8);
+                background-color: rgba(0, 0, 0, 0.5);
                 width: 100%;
                 height: 100%;
                 position: absolute;
@@ -106,14 +106,24 @@
                 align-items: center;
             }
 
-            .popup{
+            .total_register {
+                background-color: rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+            .popup_login{
                 
                 position:absolute;
                 top:50%;
                 left: 50%;
                 opacity: 0;
                 transform:translate(-50%, -50%) scale(1.25);
-                width: 400px;
+                width: 30%;
                 padding: 20px 30px;
                 display: flex;
                 text-align:center;
@@ -123,22 +133,28 @@
                 box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
                 border-radius: 10px;
                 border: 2px solid #007092;
-                transition: top 0ms ease-in-out 200ms,
-                            opacity 200ms ease-in-out 0ms,
-                            transform 200ms ease-in-out 0ms;
+                animation:fadeInAnimation;
             }
 
-            .popup.active {
+            @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+        }
+
+        
+            .popup_login.active {
                 background-color: rgba(0,0,0,0,0.6);
                 top:50%;
                 opacity: 1;
                 transform:translate(-50%, -50%) scale(1.25);
-                transition: top 0ms ease-in-out 200ms,
-                            opacity 20ms ease-in-out 0ms,
-                            transform 20ms ease-in-out 0ms;
+                animation: fadeInAnimation ease 10s;
                 
             }
-            .popup .close-btn{
+            .popup_login .close-btn{
                 position: absolute;
                 top: 10px;
                 right:10px;
@@ -150,7 +166,62 @@
                 line-height: 15px;
                 border-radius: 15px;
                 cursor: pointer;
+                
             }
+
+            .popup_register{
+                
+                position:absolute;
+                top:50%;
+                left: 50%;
+                opacity: 0;
+                transform:translate(-50%, -50%) scale(1.25);
+                width: 30%;
+                padding: 20px 30px;
+                display: flex;
+                text-align:center;
+                align-items: center;
+                justify-content: center;
+                background-color: #fff;
+                box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
+                border-radius: 10px;
+                border: 2px solid #007092;
+                animation:fadeInAnimation;
+            }
+
+            @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+        }
+
+        
+            .popup_register.active {
+                background-color: rgba(0,0,0,0,0.6);
+                top:50%;
+                opacity: 1;
+                transform:translate(-50%, -50%) scale(1.25);
+                animation: fadeInAnimation ease 10s;
+                
+            }
+            .popup_register .close-btn-register{
+                position: absolute;
+                top: 10px;
+                right:10px;
+                width: 15px;
+                height: 15px;
+                background-color: #888;
+                color: #eee;
+                text-align:center;
+                line-height: 15px;
+                border-radius: 15px;
+                cursor: pointer;
+                
+            }
+
 
             h2{
                 text-align: center;
@@ -160,9 +231,13 @@
             }
 
             input[type="checkbox"]{
-                margin-right: 10px;
+                width: 10px;
+                height: 10px;
             }
 
+            .remember_me{
+                font-size: 12px;
+            }
           .input_single{
             position: relative;
             margin: 20px 0;
@@ -218,6 +293,11 @@
             font-size: 17px;
         }
 
+        .signUp p{
+            text-align:center; 
+            font-family:sans-serif; 
+            font-size: 12px;
+        }
         </style>
     </head>
     <body>
@@ -235,48 +315,135 @@
         </div>
         <div class="sign">
             <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Sign In </p></button>
-            <button  style="color:#008DB9;text-decoration: none;background-color: transparent; border: 0;" onclick ="register.html"><p class="signUp">Sign Up</p></button>
+            <button  style="color:#008DB9; background-color: transparent; border: 0;" id="show-register"><p class="signUp">Sign Up</p></button>
         </div>
         <div class="total">
-        <div class="popup">
-            <div class="close-btn">&times;</div>
-            <form action="/loginpage" method="post">
-                <h2 class="title">Sign In</h2>
-                <br>
-                <div class = "input_single">
-                  <input class = "input" type="text" id="username" name="username" required />
-                  <label for  = "username" > Username * </label>
-                </div>
-                <div class = "input_single">
-                  <input class = "input" type="password" id="password1"  name="password1" required />
-                  <label for  = "password1" > Password *</label>
-                </div>
-                <div class="input-single">
-                    <input type="checkbox" id ="remember">
-                    <label>Remember me</label>
-                </div>
+            <div class="popup_login">
+                <div class="close-btn">&times;</div>
+                <form action="/loginpage" method="post">
+                    <h2 class="title">Sign In</h2>
+                    <br>
+                    <div class = "input_single">
+                    <input class = "input" type="text" id="username" name="username" required />
+                    <label for  = "username" > Username * </label>
+                    </div>
+                    <div class = "input_single">
+                    <input class = "input" type="password" id="password1"  name="password1" required />
+                    <label for  = "password1" > Password *</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" checked="checked" id ="remember">
+                        <label class="remember_me">Remember me</label>
+                    </div>
 
+                    <br>
+                    <div style ="text-align:center;">
+                    <button  class = "btn-form" type = "submit">Submit</button>
+                    </div>
+                    <div class="signUp">
+                    <br>
+                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Sign Up</a></p>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+    <div class="total_register">
+        <div class="popup_register">
+            <div class="close-btn-register">&times;</div>
+            <form action="/register" method="post">
+                <h2>Sign Up</h2>
                 <br>
+                <div class = "input_single">
+                <input class = "input" type="text" id="first_name" name="first_name" required />
+                <label for = "first_name" >First Name *</label>
+                </div>
+        
+                <div class = "input_single">
+                <input class = "input" type="text" id="last_name" name="last_name" required />
+                <label for = "last_name">Last Name *</label>
+                </div>
+        
+                <div class = "input_single">
+                <input class = "input" type="text" id="username" name="username" required />
+                <label for = "username">Username *</label>
+                </div>
+        
+                <div class = "input_single">
+                <input class = "input" type="email" id="email" name="email"  required/>
+                <label for = "email">Email *</label>
+                </div>
+        
+                <div class = "input_single">
+                <input class = "input" type="password" id="password1"  name="password1" required />
+                <label for = "password1">Password *</label>
+                </div>
+        
+                <div class = "input_single">
+                <input class= "input" type="password" id="password2" name="password2" required
+                />
+                <label for = "password2">Confirm Password *</label>
+                </div>
+        
                 <div style ="text-align:center;">
-                  <button  class = "btn-form" type = "submit">Submit</button>
+                <button class = "btn-form" type = "submit">Submit</button>
                 </div>
+        
                 <div class="signUp">
-                  <br><p style ="text-align:center; font-family: sans-serif">Not registered yet? <a  href = "register.html" style ="color:#008DB9">Sign Up</a></p>
+                <br>
+                <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Sign In</a></p>
                 </div>
-                
-              </form>
+            </form>
         </div>
     </div>
 
+
         <script>
+
+            /* mostrar e sair do popup do log in*/
             document.querySelector("#show-login").addEventListener("click", function(){
-                document.querySelector(".popup").classList.add("active");
+                document.querySelector(".popup_login").classList.add("active");
                 document.querySelector(".total").style.display ="flex";
             });
+
             document.querySelector(".close-btn").addEventListener("click", function(){
-                document.querySelector(".popup").classList.remove("active");
+                document.querySelector(".popup_login").classList.remove("active");
                 document.querySelector(".total").style.display = "none";
             });
+
+            /* mostrar e sair do popup do register*/
+
+            document.querySelector("#show-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display ="flex";
+            });
+            document.querySelector(".close-btn-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+
+            /* redirecionar para o popup do register */
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display = "flex";
+            });
+
+            /* redirecionar para o popup do login */
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.add("active");
+                document.querySelector(".total").style.display = "flex";
+            });
+
+
         </script>
     </body>
 </html>
