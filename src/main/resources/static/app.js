@@ -17,6 +17,12 @@ function connect() {
             // Chama a função newUpdate cada vez que recebe uma mensagem
             newUpdate(JSON.parse(message.body).content)
         });
+        // Subscreve este "canal" para receber as news
+        stompClient.subscribe('/search/news', function (message) {
+            // Chama a função displayNews cada vez que recebe uma mensagem
+            displayNews(JSON.parse(message.body).content)
+        });
+
     });
 }
 
@@ -32,10 +38,19 @@ function disconnect() {
 function search() {
     // TEST
     index();
-    demandUpdates();
+    //demandUpdates();
     getNews();
     // ir buscar os search terms para fazer a pesquisa
     stompClient.send("/searchEngine/searchTerms", {}, JSON.stringify({'content': $("#searchBar").val()}));
+}
+
+// Função que recebe os resultados da pesquisa
+function showResults(result) {
+    const res = JSON.parse(result);
+    // Adiciona os resultados à lista
+    for(let i of res){
+        $("#results").append("<tr><td>" + i["title"] + "</td><td><a href=\"" + i["url"] + "\">" + i["url"] + "</td><td>" + i["citation"] + "</td></tr>");
+    }
 }
 
 function index() {
@@ -49,46 +64,21 @@ function demandUpdates(){
     stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': "I WANT UPDATES!"}));
 }
 
-const baseURL = "https://hacker-news.firebaseio.com/v0/";
-// Função para ir buscar as top news
-async function getNews(){
-    console.log("Getting news")
-    // Ir buscar os ids das top news
-    const response = await fetch(baseURL + "topstories.json");
-    const jsonData = await response.json();
-    console.log(jsonData);
-    // Por cada top news
-    let count = 0;
-    for(let i of jsonData){
-        count += 1;
-        if(count == 10){
-            break;
-        }
-        // Ir buscar a info da news
-        let res = await fetch(baseURL + "item/" + i + ".json");
-        let data = await res.json();
-        console.log(data);
-        // Dar append à lista
-        $("#results").append("<tr><td><a href=\"" + data["url"] + "\">" + data["title"] +"</a></td></tr>");
-    }
-
-}
-
 function newUpdate(update){
     // Alertar quando tem um update
     alert(update);
 }
 
-// Função que recebe os resultados da pesquisa
-function showResults(result) {
-    // Passa para JSON
-    console.log(result)
-    result = result.replaceAll("&quot;", "\"");
-    const res = JSON.parse(result);
-    console.log(res);
-    // Adiciona os resultados à lista
+
+function getNews(){
+    stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
+}
+
+function displayNews(news){
+    const res = JSON.parse(news);
     for(let i of res){
-        $("#results").append("<tr><td>" + i["title"] + "</td><td><a href=\"" + i["url"] + "\">" + i["url"] + "</td><td>" + i["citation"] + "</td></tr>");
+        console.log(i);
+        $("#results").append("<tr><td><a href=\"" + i["url"] + "\">" + i["title"] +"</a></td></tr>");
     }
 }
 
