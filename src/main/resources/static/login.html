@@ -3,6 +3,7 @@
 <head>
   <title>Login</title>
   <meta charset="utf-8" />
+  <link rel="icon" type="images/x-icon" href="https://icon-library.com/images/url-icon/url-icon-20.jpg" />
   <style>
           *{
             margin: 0;
@@ -107,23 +108,33 @@
         <br>
         <div class = "input_single">
           <input class = "input" type="text" id="username" name="username" required />
-          <label for  = "username" > Username </label>
+          <label for  = "username" > Username * </label>
         </div>
         <div class = "input_single">
           <input class = "input" type="password" id="password1"  name="password1" required />
-          <label for  = "password1" > Password </label>
+          <label for  = "password1" > Password *</label>
         </div>
         <br>
         <div style ="text-align:center;">
-          <button class = "btn" type = "submit">Submit</button>
+          <button  onclick= "notification()" class = "btn" type = "submit">Submit</button>
         </div>
         <div class="signUp">
-          <br><p style ="text-align:center; font-family: sans-serif">Not registered yet? <a href = "register.html" style ="color:#008DB9">Sign Up</a></p>
+          <br><p style ="text-align:center; font-family: sans-serif">Not registered yet? <a  href = "register.html" style ="color:#008DB9">Sign Up</a></p>
         </div>
-
+        
       </form>
     </div>
   </section>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+  function notification(){
+    Swal.fire({
+  icon: 'error',
+  title: 'Something went wrong!',
+  })
+  }
+</script>
 </html>

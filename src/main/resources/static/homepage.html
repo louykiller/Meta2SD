@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Googol</title>
+        <meta charset="utf-8" />
+        <link rel="icon" type="images/x-icon" href="https://icon-library.com/images/url-icon/url-icon-20.jpg" />
+        <style>
+            *{
+                margin:0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family:Arial, Helvetica, sans-serif;
+            }
+
+            body{
+                background-color: white;
+            }
+            h1{
+                margin: 20px;
+                color: #008DB9;
+                font-size: 100px;
+            }
+            .container{
+                width:100%;
+                min-height: 100vh;
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .search-bar{
+                width: 40%;
+                max-width: 700px;
+                border: 2px solid #C3C3C3;
+                display: flex;
+                align-items: center;
+                border-radius: 60px;
+                padding: 0px 10px;
+            }
+
+            .search-bar input{
+                background-color: transparent;
+                flex: 1;
+                border: 0;
+                outline: none;
+                padding: 10px 10px;
+                font-size: 20px;
+                color: black
+            }
+
+            ::placeholder{
+                color: gray
+            }
+
+            .search-bar button{
+                border:0;
+                border-radius: 50%;
+                cursor: pointer;
+                margin-right: 20px;
+                background-color: transparent;
+            }
+            .search{
+                width: 20px;
+                opacity: 80%;
+            }
+            
+            .btn{
+                border-radius: 10px;
+                background-color: #C3C3C3;
+                margin: 2px;
+                border:0;
+                text-align: center;
+                padding: 10px 10px;
+                margin-top: 20px;
+                color:white;
+                font-size: 15px;
+                
+            }
+
+            .sign{
+                position: absolute;
+                display: flex;
+                top: 10px;
+                right: 0;
+                margin-right: 20px;
+            }
+
+            .signIn{
+                padding: 15px 15px;
+                background-color: #008DB9;
+                border-radius: 50px;
+                margin-right: 20px;
+                font-size: 17px;
+
+            }
+            .total {
+                background-color: rgba(0, 0, 0, 0.8);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .popup{
+                
+                position:absolute;
+                top:50%;
+                left: 50%;
+                opacity: 0;
+                transform:translate(-50%, -50%) scale(1.25);
+                width: 400px;
+                padding: 20px 30px;
+                display: flex;
+                text-align:center;
+                align-items: center;
+                justify-content: center;
+                background-color: #fff;
+                box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
+                border-radius: 10px;
+                border: 2px solid #007092;
+                transition: top 0ms ease-in-out 200ms,
+                            opacity 200ms ease-in-out 0ms,
+                            transform 200ms ease-in-out 0ms;
+            }
+
+            .popup.active {
+                background-color: rgba(0,0,0,0,0.6);
+                top:50%;
+                opacity: 1;
+                transform:translate(-50%, -50%) scale(1.25);
+                transition: top 0ms ease-in-out 200ms,
+                            opacity 20ms ease-in-out 0ms,
+                            transform 20ms ease-in-out 0ms;
+                
+            }
+            .popup .close-btn{
+                position: absolute;
+                top: 10px;
+                right:10px;
+                width: 15px;
+                height: 15px;
+                background-color: #888;
+                color: #eee;
+                text-align:center;
+                line-height: 15px;
+                border-radius: 15px;
+                cursor: pointer;
+            }
+
+            h2{
+                text-align: center;
+                font-size: 35px;
+                color: #008DB9;
+                margin: 10px 0px 20px;   
+            }
+
+            input[type="checkbox"]{
+                margin-right: 10px;
+            }
+
+          .input_single{
+            position: relative;
+            margin: 20px 0;
+          }
+
+          .input_single label {
+            position: absolute;
+            left: 0;
+            bottom: 5px;
+            transition: all 0.2s;
+            cursor: text;
+          }
+          .input {
+            width: 100%;
+            border: 0;
+            border-bottom: 2px solid #ccc ;
+            padding: 5px;
+            font-size: 17px;
+            outline: 0;
+          }
+
+          form .input_single .input:focus ~ label,
+          form .input_single .input:valid ~ label{
+            transform: translateY(-24px);
+            font-size: 12px;
+            color: gray;
+          }
+        
+        form label {
+            color: #5c5a5a;
+         }
+
+        .btn-form{
+          width: 70%;
+          border-radius: 10px;
+          background-color: #008DB9 ;
+          font-size: 15px;
+          text-align: center;
+          padding: 10px 40px;
+          border: 0;
+
+          color: #fff;
+          cursor: pointer;
+        }
+
+        .btn-form:hover {
+          background: #007092 ;
+        }
+
+
+        .signUp{
+            padding: 15px 15px;
+            font-size: 17px;
+        }
+
+        </style>
+    </head>
+    <body>
+        
+        <div class ="container">
+            <h1>Googol</h1>
+            <form action="" class ="search-bar">
+                <input type="text" placeholder="Search" name ="q">
+                <button type="submit"><img class="search" src="Search_Button.png"></button>
+            </form>
+            <div class="buttons">
+                <button class="btn">System Details</button>
+                <button class="btn">Index URL</button>
+            </div>
+        </div>
+        <div class="sign">
+            <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Sign In </p></button>
+            <button  style="color:#008DB9;text-decoration: none;background-color: transparent; border: 0;" onclick ="register.html"><p class="signUp">Sign Up</p></button>
+        </div>
+        <div class="total">
+        <div class="popup">
+            <div class="close-btn">&times;</div>
+            <form action="/loginpage" method="post">
+                <h2 class="title">Sign In</h2>
+                <br>
+                <div class = "input_single">
+                  <input class = "input" type="text" id="username" name="username" required />
+                  <label for  = "username" > Username * </label>
+                </div>
+                <div class = "input_single">
+                  <input class = "input" type="password" id="password1"  name="password1" required />
+                  <label for  = "password1" > Password *</label>
+                </div>
+                <div class="input-single">
+                    <input type="checkbox" id ="remember">
+                    <label>Remember me</label>
+                </div>
+
+                <br>
+                <div style ="text-align:center;">
+                  <button  class = "btn-form" type = "submit">Submit</button>
+                </div>
+                <div class="signUp">
+                  <br><p style ="text-align:center; font-family: sans-serif">Not registered yet? <a  href = "register.html" style ="color:#008DB9">Sign Up</a></p>
+                </div>
+                
+              </form>
+        </div>
+    </div>
+
+        <script>
+            document.querySelector("#show-login").addEventListener("click", function(){
+                document.querySelector(".popup").classList.add("active");
+                document.querySelector(".total").style.display ="flex";
+            });
+            document.querySelector(".close-btn").addEventListener("click", function(){
+                document.querySelector(".popup").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+        </script>
+    </body>
+</html>
