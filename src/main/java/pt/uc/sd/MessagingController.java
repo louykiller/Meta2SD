@@ -1,16 +1,15 @@
 package pt.uc.sd;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.HtmlUtils;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +25,6 @@ public class MessagingController {
         // TODO: Chamar RMI do search e devolver os search results em JSON
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<SearchResult> results = ca.search(searchTerms.content());
-        /*
-        // TESTE
-        ArrayList<SearchResult> test = new ArrayList<>();
-        test.add(new SearchResult("http://result1.com", "The title 1", "Cool citation 1"));
-        test.add(new SearchResult("http://result2.com", "The title 2", "Cool citation 2"));
-        test.add(new SearchResult("http://result3.com", "The title 3", "Cool citation 3"));
-        String json = new Gson().toJson(test);
-        */
 
         String json = new Gson().toJson(results);
         return new Message(json);
@@ -56,6 +47,7 @@ public class MessagingController {
         System.out.println("Message: " + message.content());
         Thread.sleep(2000);
         // TODO: Sempre que houver uma atualização enviar para o cliente
+        // Por exemplo o updateDownloaderStatus ou updateBarrelStatus
         return new Message("Update!");
     }
 
@@ -94,6 +86,16 @@ public class MessagingController {
         // Mandar em formato JSON
         String json = new Gson().toJson(hackerNewsItemRecordList);
         return new Message(json);
+    }
+
+
+    @MessageMapping("/userAction")
+    @SendTo("/user")
+    public Message userAction(Message message) throws InterruptedException {
+        System.out.println("Message: " + message);
+
+
+        return new Message("Nothing yet!");
     }
 
 }
