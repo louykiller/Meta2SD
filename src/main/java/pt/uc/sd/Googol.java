@@ -1,9 +1,13 @@
 package pt.uc.sd;// Main class que vai iniciar todas as outras classes incluindo os indexStorageBarrels, RMISearchModule e os Downloaders
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import java.io.*;
 import java.rmi.RemoteException;
 import java.util.*;
 
+@SpringBootApplication
 public class Googol {
 
     static class Shutdown extends Thread {
@@ -42,7 +46,12 @@ public class Googol {
             }
         }
     }
+
     public static void main(String[] args) throws InterruptedException, RemoteException {
+        // Spring App
+        SpringApplication.run(Googol.class, args);
+
+
         // Criar listas sincronizadas
         List<String> urlsQueue = Collections.synchronizedList(new LinkedList<>());
         Set<String> urlsVisited = Collections.synchronizedSet(new HashSet<String>());

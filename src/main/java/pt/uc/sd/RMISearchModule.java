@@ -29,8 +29,10 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
 
     public void indexURL(String url) throws RemoteException{
         System.out.println("URL Recieved: " + url);
-        // Adds the URL to the start of the queue
-        urlsQueue.add(0, url);
+        if(url.startsWith("http")) {
+            // Adds the URL to the start of the queue
+            urlsQueue.add(0, url);
+        }
     }
 
     public User login(String username, String password) throws RemoteException{
