@@ -4,6 +4,10 @@
         <title>-Pesquisa Googol</title>
         <meta charset="utf-8" />
         <link rel="icon" type="images/x-icon" href="https://icon-library.com/images/url-icon/url-icon-20.jpg" />
+        <script src="/webjars/jquery/jquery.min.js"></script>
+        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="/searchApp.js"></script>
         <style>
             *{
                 margin:0;
@@ -85,31 +89,15 @@
         <div class="container">
             <div class ="search">
                 <a href="homepage.html" style="text-decoration: none;"><h3>Googol</h3></a>
-                <form action="" class ="search-bar">
-                    <input type="text" placeholder="Search" name ="q">
-                    <button type="submit"><img class="search-icon" src="Search_Button.png"></button>
+                <form method="GET" action="./searchpage.html" class ="search-bar">
+                    <input id="searchBar" type="text" placeholder="Search" name ="searchTerms">
+                    <button id="search" type="submit"><img class="search-icon" src="Search_Button.png"></button>
                 </form>
             </div>
             <div class="results">
-                <p style="margin-bottom: 30px;color: #707070;">6 resultados encontrados</p>
+                <p id="resultsCount" style="margin-bottom: 30px;color: #707070;">0 resultados encontrados</p>
                 <div class="link">
-                    <a class="title" href="https://ucstudent.uc.pt/"><p>https://ucstudent.uc.pt/</p><h2>UC Student - Universidade de Coimbra</h2></a>
-                    <p class="citation">Citation</p>
 
-                    <a class="title" href="https://uc.pt/"><p>https://uc.pt/</p><h2>Universidade de Coimbra</h2></a>
-                    <p class="citation">Citation</p>
-
-                    <a class="title" href="https://www.uc.pt/internacional"><p>https://www.uc.pt/internacional</p><h2>Universidade de Coimbra - Internacional</h2></a>
-                    <p class="citation">Citation</p>
-
-                    <a class="title" href="https://www.google.com/?hl=pt_pt"><p>https://www.google.com/?hl=pt_pt</p><h2>Google</h2></a>
-                    <p class="citation">Citation</p>
-
-                    <a class="title" href="https://www.facebook.com"><p>https://www.facebook.com</p><h2>Facebook</h2></a>
-                    <p class="citation">Citation</p>
-
-                    <a class="title" href="https://www.google.com/intl/pt-PT/gmail/about/"><p>https://www.google.com/intl/pt-PT/gmail/about/</p><h2>Gmail</h2></a>
-                    <p class="citation">Citation</p>
                 </div>
 
             </div>

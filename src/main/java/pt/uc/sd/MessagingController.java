@@ -26,8 +26,7 @@ public class MessagingController {
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<SearchResult> results = ca.search(searchTerms.content());
 
-        String json = new Gson().toJson(results);
-        return new Message(json);
+        return new Message(new Gson().toJson(results));
     }
 
     // Função que recebe URLS para indexar mandados para /searchEngine/indexURL

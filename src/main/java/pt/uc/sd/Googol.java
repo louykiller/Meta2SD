@@ -56,7 +56,7 @@ public class Googol {
         List<String> urlsQueue = Collections.synchronizedList(new LinkedList<>());
         Set<String> urlsVisited = Collections.synchronizedSet(new HashSet<String>());
         // This is to save all the urls in the queue when we shut down the program
-        Runtime.getRuntime().addShutdownHook(new Shutdown(urlsQueue, urlsVisited));
+        //Runtime.getRuntime().addShutdownHook(new Shutdown(urlsQueue, urlsVisited));
         // Load the previous urls
         try {
             File f = new File("urlsQueue.txt");
