@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Googol</title>
+        <meta charset="utf-8" />
+        <link rel="icon" type="images/x-icon" href="https://icon-library.com/images/url-icon/url-icon-20.jpg" />
+        <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/main.css" rel="stylesheet">
+        <script src="/webjars/jquery/jquery.min.js"></script>
+        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="/app.js"></script>
+      
+
+    </head>
+    <body>
+        <div class ="container">
+            <h1>Googol</h1>
+            <form action="" class ="search-bar">
+                <input id="searchBar" type="text" placeholder="Search" name ="q">
+                <button id="search" type="submit" onclick="searchpage.html"><img class="search" src="Search_Button.png"></button>
+            </form>
+            <div class="buttons">
+                <button id="details" class="btn">System Details</button>
+                <button id="index" class="btn">Index URL</button>
+            </div>
+        </div>
+       <!-- Default dropleft button -->
+        <div class="btn-group dropleft">
+            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Dropleft
+            </button>
+            <div class="dropdown-menu">
+            <!-- Dropdown menu links -->
+            </div>
+        </div>
+        
+        <!-- Split dropleft button -->
+        <div class="btn-group">
+            <div class="btn-group dropleft" role="group">
+            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <span class="sr-only">Toggle Dropleft</span>
+            </button>
+            <div class="dropdown-menu">
+                <!-- Dropdown menu links -->
+            </div>
+            </div>
+            <button type="button" class="btn btn-secondary">
+            Split dropleft
+            </button>
+        </div>
+                    
+          
+        
+    
+    </body>
+</html>
