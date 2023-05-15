@@ -17,9 +17,9 @@
             .search{
                 display: flex;
                 width: 100%;
-                margin-right: 20px;
-                
+                margin-right: 20px;  
             }
+
             h3{
                 color: #008DB9;
                 font-size: 30px;
@@ -60,25 +60,286 @@
                 width: 20px;
                 opacity: 80%;
             }
-
-            .results{
-                margin-left: 180px;
-                margin-top: 20px;
+            
+            .sign{
+                position: absolute;
+                display: flex;
+                top: 10px;
+                right: 0;
+                margin-right: 20px;
             }
 
-            .link{
-                margin-bottom: 30px;
+            #show-login :hover{
+                box-shadow: 0px 0.3px 10px rgba(64, 66, 65, 0.209);
+                background-color: #0280a7;
+            }
+            #show-register{
+                color:#5c5a5a; 
+                background-color: transparent;
+                border-radius: 50px; 
+                border: 2px solid #008DB9;
+            }
+            
+            .signIn{
+                padding: 15px 15px;
+                background-color: #008DB9;
+                border-radius: 50px;
+                margin-right: 20px;
+                padding-left: 20px;
+                padding-right: 20px;
+                font-size: 17px;
+
+            }
+            .total {
+                background-color: rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                display: none;
+                justify-content: center;
+                align-items: center;
             }
 
-            .title{
-                font-size: 15px;
+            .total_register {
+                background-color: rgba(0, 0, 0, 0.5);
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                display: none;
+                justify-content: center;
+                align-items: center;
+            }
+            .popup_login{
+                
+                position:absolute;
+                top:50%;
+                left: 50%;
+                opacity: 0;
+                transform:translate(-50%, -50%) scale(1.25);
+                width: 30%;
+                padding: 20px 30px;
+                display: flex;
+                text-align:center;
+                align-items: center;
+                justify-content: center;
+                background-color: #fff;
+                box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
+                border-radius: 10px;
+                animation:fadeInAnimation;
             }
 
-            .citation{
-                font-size: 15px;
-                color: #707070;
-                margin-bottom: 10px;
+            @keyframes fadeInAnimation {
+                0% {
+                    opacity: 0;
+                }
+                5% {
+                    opacity: 1;
+                }
             }
+
+        
+        .popup_login.active {
+            background-color: rgba(0,0,0,0,0.6);
+            top:50%;
+            opacity: 1;
+            transform:translate(-50%, -50%) scale(1.25);
+            animation: fadeInAnimation ease 10s;
+            
+        }
+        .popup_login .close-btn{
+            position: absolute;
+            top: 20px;
+            right:10px;
+            width: 45px;
+            height: 45px;
+            color: #878787;
+            text-align:center;
+            font-size: 35px;
+            line-height: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            
+        }
+
+        .popup_register{
+            
+            position:absolute;
+            top:50%;
+            left: 50%;
+            opacity: 0;
+            transform:translate(-50%, -50%) scale(1.25);
+            width: 30%;
+            padding: 20px 30px;
+            display: flex;
+            text-align:center;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
+            border-radius: 10px;
+            animation:fadeInAnimation;
+        }
+
+        @keyframes fadeInAnimation {
+            0% {
+                opacity: 0;
+            }
+            5% {
+                opacity: 1;
+            }
+        }
+
+    
+        .popup_register.active {
+            background-color: rgba(0,0,0,0,0.6);
+            top:50%;
+            opacity: 1;
+            transform:translate(-50%, -50%) scale(1.25);
+            animation: fadeInAnimation ease 10s;
+            
+        }
+        .popup_register .close-btn-register{
+            position: absolute;
+            top: 10px;
+            right:10px;
+            width: 45px;
+            height: 25px;
+            color: #878787;
+            text-align:center;
+            font-size: 35px;
+            cursor: pointer;
+            
+        }
+
+
+        .h2_login_register{
+            text-align: center;
+            font-size: 35px;
+            color: #008DB9;
+            margin: 10px 0px 20px;   
+        }
+
+  
+        .input_single{
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .input_single label {
+            position: absolute;
+            left: 0;
+            bottom: 5px;
+            transition: all 0.2s;
+            cursor: text;
+        }
+        .input {
+            width: 100%;
+            border: 0;
+            border-bottom: 2px solid #dadada ;
+            padding: 5px;
+            font-size: 17px;
+            outline: 0;
+        }
+
+        form .input_single .input:focus ~ label,
+        form .input_single .input:valid ~ label{
+            transform: translateY(-24px);
+            font-size: 12px;
+            color: gray;
+        }
+        
+        form label {
+            color: #b3b3b3;
+        }
+
+        .btn-form{
+        width: 70%;
+        border-radius: 10px;
+        background-color: #008DB9 ;
+        font-size: 15px;
+        text-align: center;
+        padding: 10px 40px;
+        border: 0;
+
+        color: #fff;
+        cursor: pointer;
+        }
+
+        .btn-form:hover {
+        background: #007092 ;
+        }
+
+
+        .signUp{
+            padding: 15px 15px;
+            padding-left: 20px;
+            padding-right: 20px;
+            font-size: 17px;
+        }
+
+        .signUp p{
+            text-align:center; 
+            font-family:sans-serif; 
+            font-size: 12px;
+        }
+
+
+        .results{
+            margin-left: 180px;
+            margin-top: 20px;
+        }
+
+        .link{
+            margin-bottom: 30px;
+        }
+
+        .title{
+            font-size: 15px;
+        }
+
+        .citation{
+            font-size: 15px;
+            color: #707070;
+            margin-bottom: 10px;
+        }
+
+        .bar_number{
+            text-align: center;
+        }
+        
+        .controllers {
+            text-decoration: none;
+            display: inline-block;
+            color:#008DB9;
+        }
+
+        .controllers:hover {
+            color:#007092;
+        }
+
+        .number{
+            text-decoration: none;
+            color:#008DB9;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        .number:hover {
+            color:#007092;
+        }
+        .next_number{
+            text-decoration: none;
+            color:#5c5a5a;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        /* TODO: SÓ APARECER DEPOIS DA PRIMEIRA PÁGINA E NEXT NA ULTIMA PÁGINA
+                O NÚMERO FICAR COM COR QUANDO ESTIVER NA PÁGINA DELE */
+        
+
+
         </style>
     </head>
     <body>
@@ -89,6 +350,85 @@
                     <input type="text" placeholder="Search" name ="q">
                     <button type="submit"><img class="search-icon" src="Search_Button.png"></button>
                 </form>
+            </div>
+
+            <div class="sign">
+                <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
+                <button id="show-register"><p class="signUp">Register</p></button>
+            </div>
+            <div class="total">
+                <div class="popup_login">
+                    <div class="close-btn">&times;</div>
+                    <form action="/loginpage" method="post">
+                        <h2 class="h2_login_register">Login</h2>
+                        <br>
+                        <div class = "input_single">
+                        <input class = "input" type="text" id="username" name="username" required />
+                        <label for  = "username" > Username * </label>
+                        </div>
+                        <div class = "input_single">
+                        <input class = "input" type="password" id="password1"  name="password1" required />
+                        <label for  = "password1" > Password *</label>
+                        </div>
+                        <div style ="text-align:center;">
+                        <button  class = "btn-form" type = "submit">Submit</button>
+                        </div>
+                        <div class="signUp">
+                        <br>
+                        <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+    
+            <div class="total_register">
+                <div class="popup_register">
+                    <div class="close-btn-register">&times;</div>
+                    <form action="/register" method="post">
+                        <h2 class="h2_login_register">Register</h2>
+                        <br>
+                        <div class = "input_single">
+                        <input class = "input" type="text" id="first_name" name="first_name" required />
+                        <label for = "first_name" >First Name *</label>
+                        </div>
+                
+                        <div class = "input_single">
+                        <input class = "input" type="text" id="last_name" name="last_name" required />
+                        <label for = "last_name">Last Name *</label>
+                        </div>
+                
+                        <div class = "input_single">
+                        <input class = "input" type="text" id="username" name="username" required />
+                        <label for = "username">Username *</label>
+                        </div>
+                
+                        <div class = "input_single">
+                        <input class = "input" type="email" id="email" name="email"  required/>
+                        <label for = "email">Email *</label>
+                        </div>
+                
+                        <div class = "input_single">
+                        <input class = "input" type="password" id="password1"  name="password1" required />
+                        <label for = "password1">Password *</label>
+                        </div>
+                
+                        <div class = "input_single">
+                        <input class= "input" type="password" id="password2" name="password2" required
+                        />
+                        <label for = "password2">Confirm Password *</label>
+                        </div>
+                
+                        <div style ="text-align:center;">
+                        <button class = "btn-form" type = "submit">Submit</button>
+                        </div>
+                
+                        <div class="signUp">
+                        <br>
+                        <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="results">
                 <p style="margin-bottom: 30px;color: #707070;">6 resultados encontrados</p>
@@ -111,9 +451,62 @@
                     <a class="title" href="https://www.google.com/intl/pt-PT/gmail/about/"><p>https://www.google.com/intl/pt-PT/gmail/about/</p><h2>Gmail</h2></a>
                     <p class="citation">Citation</p>
                 </div>
-
+                <br><br><br> <br><br> 
+            </div>
+            <div class="bar_number">
+                <a href="" id="previous" class="controllers"> Previous</a>
+                <a href="page" class="number">1</a>
+                <a href="page" class="next_number">2</a>
+                <a href="page" class="next_number">3</a>
+                <a href="page" class="next_number">4</a>
+                <a href="#" id="next" class="controllers">Next</a>
             </div>
         </div>
-        
+        <script>
+
+            /* mostrar e sair do popup do log in*/
+            document.querySelector("#show-login").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.add("active");
+                document.querySelector(".total").style.display ="flex";
+            });
+
+            document.querySelector(".close-btn").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+
+            /* mostrar e sair do popup do register*/
+
+            document.querySelector("#show-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display ="flex";
+            });
+            document.querySelector(".close-btn-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+
+            /* redirecionar para o popup do register */
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display = "flex";
+            });
+
+            /* redirecionar para o popup do login */
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.add("active");
+                document.querySelector(".total").style.display = "flex";
+            });
+
+
+        </script>
     </body>
 </html>

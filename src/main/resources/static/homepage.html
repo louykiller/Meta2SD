@@ -4,10 +4,6 @@
         <title>Googol</title>
         <meta charset="utf-8" />
         <link rel="icon" type="images/x-icon" href="https://icon-library.com/images/url-icon/url-icon-20.jpg" />
-        <script src="/webjars/jquery/jquery.min.js"></script>
-        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="/app.js"></script>
         <style>
             *{
                 margin:0;
@@ -93,6 +89,22 @@
                 top: 10px;
                 right: 0;
                 margin-right: 20px;
+            }
+
+            #show-login :hover{
+                box-shadow: 0px 0.3px 10px rgba(64, 66, 65, 0.209);
+                background-color: #0280a7;
+            }
+            #show-register{
+                color:#5c5a5a; 
+                background-color: transparent;
+                border-radius: 50px; 
+                border: 2px solid #008DB9;
+            }
+
+
+            #show-register :hover{
+                color:#008DB9;
             }
 
             .signIn{
@@ -293,36 +305,39 @@
           background: #007092 ;
         }
 
-
+            
         .signUp{
-            padding: 15px 15px;
+            border-radius: 50px;
             padding-left: 20px;
             padding-right: 20px;
             font-size: 17px;
         }
+
+        
 
         .signUp p{
             text-align:center; 
             font-family:sans-serif; 
             font-size: 12px;
         }
+
         </style>
     </head>
     <body>
         <div class ="container">
             <h1>Googol</h1>
             <form action="" class ="search-bar">
-                <input id="searchBar" type="text" placeholder="Search" name ="q">
-                <button id="search" type="submit" onclick="searchpage.html"><img class="search" src="Search_Button.png"></button>
+                <input type="text" placeholder="Search" name ="q">
+                <button type="submit" onclick="searchpage.html"><img class="search" src="Search_Button.png"></button>
             </form>
             <div class="buttons">
-                <button id="details" class="btn">System Details</button>
-                <button id="index" class="btn">Index URL</button>
+                <button class="btn">System Details</button>
+                <button class="btn">Index URL</button>
             </div>
         </div>
         <div class="sign">
             <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
-            <button  style="color:#5c5a5a; background-color: transparent;border-radius: 50px; border: 2px solid #008DB9;" id="show-register"><p class="signUp">Register</p></button>
+            <button id="show-register"><p class="signUp">Register</p></button>
         </div>
         <div class="total">
             <div class="popup_login">
@@ -331,15 +346,15 @@
                     <h2 class="title">Login</h2>
                     <br>
                     <div class = "input_single">
-                    <input class = "input" type="text" id="usernameLogin" name="username" required />
-                    <label for  = "usernameLogin" > Username * </label>
+                    <input class = "input" type="text" id="username" name="username" required />
+                    <label for  = "username" > Username * </label>
                     </div>
                     <div class = "input_single">
-                    <input class = "input" type="password" id="passwordLogin"  name="password1" required />
-                    <label for  = "passwordLogin" > Password *</label>
+                    <input class = "input" type="password" id="password1"  name="password1" required />
+                    <label for  = "password1" > Password *</label>
                     </div>
                     <div style ="text-align:center;">
-                    <button id="submitLogin" class = "btn-form" type = "submit">Submit</button>
+                    <button  class = "btn-form" type = "submit">Submit</button>
                     </div>
                     <div class="signUp">
                     <br>
@@ -382,12 +397,13 @@
                 </div>
         
                 <div class = "input_single">
-                <input class= "input" type="password" id="password2" name="password2" required />
+                <input class= "input" type="password" id="password2" name="password2" required
+                />
                 <label for = "password2">Confirm Password *</label>
                 </div>
         
                 <div style ="text-align:center;">
-                <button id="submitRegister" class = "btn-form" type = "submit">Submit</button>
+                <button class = "btn-form" type = "submit">Submit</button>
                 </div>
         
                 <div class="signUp">
@@ -398,5 +414,52 @@
         </div>
     </div>
 
+
+        <script>
+
+            /* mostrar e sair do popup do log in*/
+            document.querySelector("#show-login").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.add("active");
+                document.querySelector(".total").style.display ="flex";
+            });
+
+            document.querySelector(".close-btn").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+
+            /* mostrar e sair do popup do register*/
+
+            document.querySelector("#show-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display ="flex";
+            });
+            document.querySelector(".close-btn-register").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+
+            /* redirecionar para o popup do register */
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.remove("active");
+                document.querySelector(".total").style.display = "none";
+            });
+            document.querySelector("#redirect_signUp").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.add("active");
+                document.querySelector(".total_register").style.display = "flex";
+            });
+
+            /* redirecionar para o popup do login */
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_register").classList.remove("active");
+                document.querySelector(".total_register").style.display = "none";
+            });
+            document.querySelector("#redirect_signIn").addEventListener("click", function(){
+                document.querySelector(".popup_login").classList.add("active");
+                document.querySelector(".total").style.display = "flex";
+            });
+
+
+        </script>
     </body>
 </html>
