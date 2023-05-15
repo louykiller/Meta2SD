@@ -68,15 +68,19 @@
             
             .btn{
                 border-radius: 10px;
-                background-color: #C3C3C3;
+                background-color: #d8d6d6;
                 margin: 2px;
                 border:0;
                 text-align: center;
                 padding: 10px 10px;
                 margin-top: 20px;
-                color:white;
+                color:#303030;
                 font-size: 15px;
                 
+            }
+
+            .btn:hover{
+                background-color: #e9e7e7;
             }
 
             .sign{
@@ -92,6 +96,8 @@
                 background-color: #008DB9;
                 border-radius: 50px;
                 margin-right: 20px;
+                padding-left: 20px;
+                padding-right: 20px;
                 font-size: 17px;
 
             }
@@ -132,7 +138,6 @@
                 background-color: #fff;
                 box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
                 border-radius: 10px;
-                border: 2px solid #007092;
                 animation:fadeInAnimation;
             }
 
@@ -156,13 +161,13 @@
             }
             .popup_login .close-btn{
                 position: absolute;
-                top: 10px;
+                top: 20px;
                 right:10px;
-                width: 15px;
-                height: 15px;
-                background-color: #888;
-                color: #eee;
+                width: 45px;
+                height: 45px;
+                color: #878787;
                 text-align:center;
+                font-size: 35px;
                 line-height: 15px;
                 border-radius: 15px;
                 cursor: pointer;
@@ -185,7 +190,6 @@
                 background-color: #fff;
                 box-sizing: 2px 2px 5px 5px rgba(0,0,0,0,15);
                 border-radius: 10px;
-                border: 2px solid #007092;
                 animation:fadeInAnimation;
             }
 
@@ -211,13 +215,11 @@
                 position: absolute;
                 top: 10px;
                 right:10px;
-                width: 15px;
-                height: 15px;
-                background-color: #888;
-                color: #eee;
+                width: 45px;
+                height: 25px;
+                color: #878787;
                 text-align:center;
-                line-height: 15px;
-                border-radius: 15px;
+                font-size: 35px;
                 cursor: pointer;
                 
             }
@@ -253,7 +255,7 @@
           .input {
             width: 100%;
             border: 0;
-            border-bottom: 2px solid #ccc ;
+            border-bottom: 2px solid #dadada ;
             padding: 5px;
             font-size: 17px;
             outline: 0;
@@ -267,7 +269,7 @@
           }
         
         form label {
-            color: #5c5a5a;
+            color: #b3b3b3;
          }
 
         .btn-form{
@@ -290,6 +292,8 @@
 
         .signUp{
             padding: 15px 15px;
+            padding-left: 20px;
+            padding-right: 20px;
             font-size: 17px;
         }
 
@@ -305,7 +309,7 @@
             <h1>Googol</h1>
             <form action="" class ="search-bar">
                 <input type="text" placeholder="Search" name ="q">
-                <button type="submit"><img class="search" src="Search_Button.png"></button>
+                <button type="submit" onclick="searchpage.html"><img class="search" src="Search_Button.png"></button>
             </form>
             <div class="buttons">
                 <button class="btn">System Details</button>
@@ -313,14 +317,14 @@
             </div>
         </div>
         <div class="sign">
-            <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Sign In </p></button>
-            <button  style="color:#008DB9; background-color: transparent; border: 0;" id="show-register"><p class="signUp">Sign Up</p></button>
+            <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
+            <button  style="color:#5c5a5a; background-color: transparent;border-radius: 50px; border: 2px solid #008DB9;" id="show-register"><p class="signUp">Register</p></button>
         </div>
         <div class="total">
             <div class="popup_login">
                 <div class="close-btn">&times;</div>
                 <form action="/loginpage" method="post">
-                    <h2 class="title">Sign In</h2>
+                    <h2 class="title">Login</h2>
                     <br>
                     <div class = "input_single">
                     <input class = "input" type="text" id="username" name="username" required />
@@ -330,18 +334,12 @@
                     <input class = "input" type="password" id="password1"  name="password1" required />
                     <label for  = "password1" > Password *</label>
                     </div>
-                    <div>
-                        <input type="checkbox" checked="checked" id ="remember">
-                        <label class="remember_me">Remember me</label>
-                    </div>
-
-                    <br>
                     <div style ="text-align:center;">
                     <button  class = "btn-form" type = "submit">Submit</button>
                     </div>
                     <div class="signUp">
                     <br>
-                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Sign Up</a></p>
+                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
                     </div>
                     
                 </form>
@@ -352,7 +350,7 @@
         <div class="popup_register">
             <div class="close-btn-register">&times;</div>
             <form action="/register" method="post">
-                <h2>Sign Up</h2>
+                <h2>Register</h2>
                 <br>
                 <div class = "input_single">
                 <input class = "input" type="text" id="first_name" name="first_name" required />
@@ -391,7 +389,7 @@
         
                 <div class="signUp">
                 <br>
-                <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Sign In</a></p>
+                <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
                 </div>
             </form>
         </div>
