@@ -5,7 +5,7 @@ function connect() {
     var socket = new SockJS('/searchWebsocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
-        setConnected(true);
+        //setConnected(true);
         console.log('Connected: ' + frame);
         // Subscreve este "canal" para receber os resultados da pesquisa
         stompClient.subscribe('/search/results', function (message) {
@@ -22,7 +22,11 @@ function connect() {
             // Chama a função displayNews cada vez que recebe uma mensagem
             displayNews(JSON.parse(message.body).content)
         });
-
+        // Subscreve este "canal" para gerir o user
+        stompClient.subscribe('/user', function (message) {
+            // Chama a função manageUser cada vez que recebe uma mensagem
+            manageUser(JSON.parse(message.body).content)
+        });
     });
 }
 
@@ -31,8 +35,18 @@ function disconnect() {
     if (stompClient !== null) {
         stompClient.disconnect();
     }
-    setConnected(false);
+    //setConnected(false);
     console.log("Disconnected");
+}
+
+function manageUser(message){
+    console.log(message);
+}
+
+function userAction(){
+    let json = {'action': 'login', 'username': 'username', 'password': 'password'};
+    console.log(json);
+    stompClient.send("/searchEngine/userAction", {}, JSON.stringify(json));
 }
 
 function search() {
@@ -56,6 +70,10 @@ function showResults(result) {
 function index() {
     // Mandar URL para indexar para /searchEngine/indexURL
     stompClient.send("/searchEngine/indexURL", {}, JSON.stringify({'content': $("#searchBar").val()}));
+    // Apagar o texto
+    $("#searchBar").val("");
+    // Pop up a confirmar
+    alert("Your URL was sent to be indexed!");
 }
 
 function demandUpdates(){
@@ -82,6 +100,7 @@ function displayNews(news){
     }
 }
 
+/*
 // Função do stor
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
@@ -94,24 +113,90 @@ function setConnected(connected) {
     }
     $("#results").html("");
 }
+*/
+
+function test(mes){
+    console.log("Test " + mes);
+}
 
 $(function () {
-    $("form").on('submit', function (e) {
-        e.preventDefault();
-    });
     //$("#searchResults").hide();
-    $( "#connect" ).click(function() { connect(); });
-    $( "#disconnect" ).click(function() { disconnect(); });
-    $( "#send" ).click(function() { search(); });
+    //document.title = "Test";
+    /*
+        // Serve para fazer disconnect antes de sair da pagina (talvez precisa de ser mudada)
+        window.addEventListener('beforeunload', function (e) {
+            console.log("Bye");
+            disconnect();
+            e.preventDefault();
+            e.returnValue = "";
+        });
+        */
 
-    // Serve para fazer disconnect antes de sair da pagina (talvez precisa de ser mudada)
-    window.addEventListener('beforeunload', function (e) {
-        console.log("Bye");
-        disconnect();
+
+    connect();
+
+    $( "#search" ).click(function (e) {
+        // Ir para a pagina dos resultados
+        test("search");
+    });
+    $( "#index" ).click(function (e) {
+        // Indexar o que esta na searchBar
+        index();
+    });
+    $( "#details" ).click(function (e) {
+        // Abrir a página de detalhes do sistema
+        test("details");
+    });
+
+    $( "#submitLogin" ).click(function(e) {
         e.preventDefault();
-        e.returnValue = '';
+        test("Logged In " + $("#usernameLogin").val());
+    });
+
+    $( "#submitRegister" ).click(function(e) {
+            e.preventDefault();
+            test("Registered " + $("#username").val());
+        });
+
+    /* mostrar e sair do popup do log in*/
+    $("#show-login").click(function(){
+        $(".popup_login").addClass("active");
+        $(".total").css("display", "flex");
+    });
+     $(".close-btn").click(function(){
+        $(".popup_login").removeClass("active");
+        $(".total").css("display", "none");
+     });
+
+    /* mostrar e sair do popup do register*/
+    $("#show-register").click(function(){
+        $(".popup_register").addClass("active");
+        $(".total_register").css("display", "flex");
+    });
+    $(".close-btn-register").click(function(){
+        $(".popup_register").removeClass("active");
+        $(".total_register").css("display", "none");
+    });
+
+    /* redirecionar para o popup do register */
+    $("#redirect_signUp").click(function(){
+        $(".popup_login").removeClass("active");
+        $(".total").css("display", "none");
+    });
+    $("#redirect_signUp").click(function(){
+        $(".popup_register").addClass("active");
+        $(".total_register").css("display", "flex");
+    });
+
+    /* redirecionar para o popup do login */
+    $("#redirect_signIn").click(function(){
+        $(".popup_register").removeClass("active");
+        $(".total_register").css("display", "none");
+    });
+    $("#redirect_signIn").click(function(){
+        $(".popup_login").addClass("active");
+        $(".total").css("display", "flex");
     });
 });
-
 
 
