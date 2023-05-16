@@ -79,6 +79,10 @@
                 border: 2px solid #008DB9;
             }
             
+            #show-register :hover{
+                color:#008DB9;
+            }
+
             .signIn{
                 padding: 15px 15px;
                 background-color: #008DB9;
@@ -292,6 +296,7 @@
                 margin-right: 20px;
                 list-style: none;
                 
+                
             }
 
             .photo{
@@ -300,10 +305,12 @@
 
             .user li{
                 display: inline-block;
+
             }
             .dropdown-menu{
                 border-radius: 10px;
                 background-color: #f6f6f6;
+                box-shadow: #9c9c9c 0px 5px 15px;
                 padding-top: 25px;
                 padding-bottom: 25px;
                 padding-right: 70px;
@@ -347,6 +354,8 @@
 
             .System_Details{
                 display:flex;
+                align-items: flex-start;
+                margin-bottom: 12px;
             }
 
             .details{
@@ -365,11 +374,34 @@
 
             .details_list{
                 list-style-type:none;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                max-width:max-content;
+            }
+
+            .active{
+                border-radius: 10px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-right: 70px;
+                padding-left: 12px;
+                padding-left: 15px;
+                margin-right: 12px;
+                max-width:max-content;
+            }
+
+            .deactive{
+                border-radius: 10px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-right: 70px;
+                padding-left: 15px;
+                max-width:max-content;
             }
 
             .detail_item{
                 padding:7px;
-                padding-left: 12px;
                 margin-bottom: 10px;
             }
 
@@ -520,22 +552,31 @@
     <div class="System_Details">
         <div class="details">
             <h2>System Details</h2>
-            <ul class="details_list">
-                <li class="detail_item">Downloader 3 on port 5000 is active</li>
-                <li class="detail_item">Downloader 6 on port 5002 is active</li>
-                <li class="detail_item">Downloader 38 on port 5004 is active</li>
-                <li class="detail_item">Downloader 2 on port 5006 is active</li>
-                <li class="detail_item">Downloader 9 on port 5008 is deactive</li>
-                <li class="detail_item">Downloader 10 on port 5010 is active</li>
-                <li class="detail_item">Downloader 20 on port 5005 is active</li>
-                <li class="detail_item">Downloader 25 on port 5007 is active</li>
-                <li class="detail_item">Downloader 7 on port 5009 is active</li>
-                <li class="detail_item">Downloader 5 on port 5001 is deactive</li>
-                <li class="detail_item">Downloader 1 on port 5003 is active</li>
-            </ul>
+            <div class="details_list">
+                <div class="active"> 
+                    <li style="font-weight: bold; font-size: 20px;margin-left: 7px;text-decoration: underline;margin-bottom: 12px;">Active
+                        <li class="detail_item">Downloader 3 - port 5000</li>
+                        <li class="detail_item">Downloader 6 - port 5002</li>
+                        <li class="detail_item">Downloader 38 - port 5004</li>
+                        <li class="detail_item">Downloader 2 - port 5006</li>
+                        <li class="detail_item">Downloader 10 - port 5010</li>
+                        <li class="detail_item">Downloader 20 - port 5005</li>
+                        <li class="detail_item">Downloader 25 - port 5007</li>
+                        <li class="detail_item">Downloader 7 - port 5009</li>
+                        <li class="detail_item">Downloader 1 - port 5003</li>
+                    </li>    
+                </div>
+                <div class="deactive">
+                    <li style="font-weight: bold; font-size: 20px;margin-left: 7px;text-decoration: underline;margin-bottom: 12px;">Deactive
+                        <li class="detail_item">Downloader 5 - port 5001</li>
+                        <li class="detail_item">Downloader 9 - port 5008</li>
+                    </li>
+                </div>
+
+            </div>
         </div>
         <div class="top10">
-            <h2>Top 10 Searches</h2>
+            <h2 style="margin-bottom: 30px;">Top 10 Searches</h2>
             <ul class="top_list">
                 <li class="top_item"><a href="#">Gatos Fofos</a></li>
                 <li class="top_item"><a href="#">UC</a></li>

@@ -7,6 +7,8 @@
         <script src="/webjars/jquery/jquery.min.js"></script>
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="sweetalert2.all.min.js"></script>
         <script src="/app.js"></script>
         <style>
             *{
@@ -348,6 +350,7 @@
             .dropdown-menu{
                 border-radius: 10px;
                 background-color: #f6f6f6;
+                box-shadow: #9c9c9c 0px 5px 15px;
                 padding-top: 25px;
                 padding-bottom: 25px;
                 padding-right: 70px;
@@ -400,8 +403,8 @@
                 <button id="search" type="submit"><img class="search" src="Search_Button.png"></button>
             </form>
             <div class="buttons">
-                <button id="details" class="btn">System Details</button>
-                <button id="index" class="btn">Index URL</button>
+                <a id="details" class="btn" href="systemDetails.html" >System Details</a>
+                <a id="index" class="btn" href="indexLink.html">Index URL</a>
             </div>
         </div>
         <div id="loggedOff">
@@ -430,7 +433,7 @@
                     </div>
                     <div class="signUp">
                     <br>
-                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
+                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px" >Register</a></p>
                     </div>
                     
                 </form>
