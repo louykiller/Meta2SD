@@ -76,6 +76,7 @@
                 margin-top: 20px;
                 color:#303030;
                 font-size: 15px;
+                text-decoration: none;
                 
             }
 
@@ -321,6 +322,66 @@
             font-size: 12px;
         }
 
+        .user{
+                position:absolute;
+                top: 10px;
+                right: 0;
+                margin-right: 20px;
+                list-style: none;
+                
+            }
+
+            .photo{
+                width: 40px;
+            }
+
+            .user li{
+                display: inline-block;
+            }
+            .dropdown-menu{
+                border-radius: 10px;
+                background-color: #f6f6f6;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-right: 70px;
+                padding-left: 5px;
+                margin-top: 45px;
+                margin-right: -40px;
+                display: none;
+                vertical-align: center;
+                text-align: left;
+
+            }
+            .dropdown-menu a{
+                display:block; ;
+                border-radius: 50px;
+                padding:10px;
+                padding-right: 20px;
+                margin-bottom: 10px;
+
+            }
+            .dropdown-menu a:hover{
+                background-color: #d7d6d6;
+                
+            }
+            .dropdown:hover .dropdown-menu{
+                display: block;
+                float: left;
+            }
+            .logOut{
+                color:#006d8e;
+                text-decoration: none;
+                
+            }
+            .logout_image{
+                width: 35px;
+                padding-right: 10px;
+            }
+            /* quando fizer log out ir para a home page com o login e register buttons */
+            #loggedIn{
+                visibility: hidden;
+            }
+
         </style>
     </head>
     <body>
@@ -331,14 +392,17 @@
                 <button type="submit" onclick="searchpage.html"><img class="search" src="Search_Button.png"></button>
             </form>
             <div class="buttons">
-                <button class="btn">System Details</button>
+                <a class="btn" href="systemDetails.html">System Details</a>
                 <button class="btn">Index URL</button>
             </div>
         </div>
-        <div class="sign">
-            <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
-            <button id="show-register"><p class="signUp">Register</p></button>
+        <div id="loggedOff">
+            <div class="sign">
+                <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
+                <button id="show-register"><p class="signUp">Register</p></button>
+            </div>
         </div>
+        
         <div class="total">
             <div class="popup_login">
                 <div class="close-btn">&times;</div>
@@ -386,10 +450,7 @@
                 <label for = "username">Username *</label>
                 </div>
         
-                <div class = "input_single">
-                <input class = "input" type="email" id="email" name="email"  required/>
-                <label for = "email">Email *</label>
-                </div>
+            
         
                 <div class = "input_single">
                 <input class = "input" type="password" id="password1"  name="password1" required />
@@ -412,6 +473,20 @@
                 </div>
             </form>
         </div>
+    </div>
+
+
+    <div id="loggedIn">
+        <ul class="user">
+            <li class="dropdown">
+                <a><img class="photo" src="User.png"></a>
+                <div class="dropdown-menu">
+                    <a style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
+                    
+                    <a class="logOut" style="display:flex; align-items: center;" href="homepage.html"><img class="logout_image" style="display: flex; justify-content: left;" src="logOut.png">Log out</a>
+                </div>
+            </li>
+        </ul>
     </div>
 
 
