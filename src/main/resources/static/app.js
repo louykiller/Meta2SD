@@ -43,8 +43,11 @@ function register(){
     const password1 = $( "#password1" ).val();
     const password2 = $( "#password2" ).val();
     if(password1 !== password2){
-       console.log("Passwords dont match");
-       // TODO: Notificacao
+        Swal.fire({
+            title: 'Passwords dont match!',
+            icon: 'info',
+            confirmButtonText: 'Ok'
+          })
     }
     else{
         let json = {'name': name, 'username': username, 'password': password1};
@@ -59,24 +62,37 @@ function userAction(user){
     if(user["action"] == "login"){
         if(user["username"] == null){
             Swal.fire({
-              title: 'Error!',
-              text: 'Couldn\'t log in. Invalid username/password',
-              icon: 'error',
-              confirmButtonText: 'Ok'
-            })
+                title: 'Wrong credentials',
+                text: 'Try again',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              })
         }
         else {
-            alert("Logged In. Welcome back " + user["name"]);
+            Swal.fire({
+                title: 'Welcome back' + user["name"],
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
             $('.close-btn').trigger('click');
             loggedIn(user["name"]);
         }
     }
     else {
         if(user["username"] == null){
-            alert("Couldn't register. username already in use");
+            Swal.fire({
+                title: 'Username already in use',
+                text: 'Try again',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              })
         }
         else {
-            alert("Registered. Welcome " + user["name"]);
+            Swal.fire({
+                title: 'Welcome' + user["name"],
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
             $('.close-btn-register').trigger('click');
             loggedIn(user["name"]);
         }
@@ -96,12 +112,21 @@ function index() {
     // Apagar o texto
     $("#searchBar").val("");
     // TODO: Pop up a confirmar
-    alert("Your URL was sent to be indexed!");
+    Swal.fire({
+        title:"URL sent to be indexed",
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
 }
 
 function newUpdate(update){
     // Alertar quando tem um update
-    alert(update);
+    Swal.fire({
+        title:"New Update!",
+        text: update,
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
 }
 
 $(function () {
@@ -131,7 +156,11 @@ $(function () {
     });
     $(".logOut").click(function (e){
         localStorage.removeItem("name");
-        alert("Logged Out!");
+        Swal.fire({
+            title:"Logged Out!",
+            icon: 'info',
+            confirmButtonText: 'Ok'
+          })
     });
 
     /* mostrar e sair do popup do log in*/

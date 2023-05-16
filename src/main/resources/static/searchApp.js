@@ -56,12 +56,14 @@ function register(){
     const password1 = $( "#password1" ).val();
     const password2 = $( "#password2" ).val();
     if(password1 !== password2){
-       console.log("Passwords dont match");
-       // TODO: Notificacao
+       Swal.fire({
+        title: 'Passwords dont match!',
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
     }
     else{
         let json = {'name': name, 'username': username, 'password': password1};
-        console.log(json);
         stompClient.send("/searchEngine/register", {}, JSON.stringify(json));
     }
 }
@@ -71,22 +73,41 @@ function userAction(user){
     console.log(user);
     if(user["action"] == "login"){
         if(user["username"] == null){
-            alert("Couldn't log in. Invalid username/password");
+            Swal.fire({
+                title: 'Wrong credentials',
+                text: 'Try again',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              })
         }
         else {
-            alert("Logged In. Welcome back " + user["name"]);
+            Swal.fire({
+                title: 'Welcome back' + user["name"],
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
             $('.close-btn').trigger('click');
             loggedIn(user["name"]);
         }
     }
     else {
         if(user["username"] == null){
-            alert("Couldn't register. username already in use");
+            Swal.fire({
+                title: 'Username already in use',
+                text: 'Try again',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+              })
         }
         else {
-            alert("Registered. Welcome " + user["name"]);
+            Swal.fire({
+                title: 'Welcome' + user["name"],
+                icon: 'success',
+                confirmButtonText: 'Ok'
+              })
             $('.close-btn-register').trigger('click');
             loggedIn(user["name"]);
+            
         }
     }
 }
@@ -168,7 +189,13 @@ function showResults(result) {
 
 function newUpdate(update){
     // Alertar quando tem um update
-    alert(update);
+    Swal.fire({
+        title:"New Update!",
+        text: update,
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
+
 }
 
 function getNews(news){
@@ -214,7 +241,11 @@ $(function () {
     });
     $(".logOut").click(function (e){
         localStorage.removeItem("name");
-        alert("Logged Out!");
+        Swal.fire({
+            title:"Logged Out!",
+            icon: 'info',
+            confirmButtonText: 'Ok'
+          })
     });
 
     $("#previous").click(function (e){
