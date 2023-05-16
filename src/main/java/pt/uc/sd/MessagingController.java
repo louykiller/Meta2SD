@@ -21,11 +21,8 @@ public class MessagingController {
     @MessageMapping("/searchTerms")
     @SendTo("/search/results")
     public Message search(Message searchTerms) throws InterruptedException, RemoteException, NotBoundException {
-        System.out.println("Search for " + searchTerms.content());
-        // TODO: Chamar RMI do search e devolver os search results em JSON
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<SearchResult> results = ca.search(searchTerms.content());
-
         return new Message(new Gson().toJson(results));
     }
 

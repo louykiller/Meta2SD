@@ -1,5 +1,4 @@
 var stompClient = null;
-var user = null;
 
 
 // Codigo maioritariamente do stor
@@ -54,6 +53,7 @@ function register(){
     }
 }
 
+// TODO: POR POP UPS BONITOS EM VEZ DE ALERTS
 function userAction(user){
     console.log(user);
     if(user["action"] == "login"){
@@ -62,16 +62,27 @@ function userAction(user){
         }
         else {
             alert("Logged In. Welcome back " + user["name"]);
+            $('.close-btn').trigger('click');
+            loggedIn(user["name"]);
         }
     }
     else {
-            if(user["username"] == null){
-                alert("Couldn't register. username already in use");
-            }
-            else {
-                alert("Registered. Welcome " + user["name"]);
-            }
+        if(user["username"] == null){
+            alert("Couldn't register. username already in use");
+        }
+        else {
+            alert("Registered. Welcome " + user["name"]);
+            $('.close-btn-register').trigger('click');
+            loggedIn(user["name"]);
+        }
     }
+}
+
+function loggedIn(name){
+    $("#loggedOff").css("visibility", "hidden");
+    $("#loggedIn").css("visibility", "visible");
+    $("#name").text(name);
+    localStorage.setItem("name", name);
 }
 
 function index() {
@@ -83,23 +94,19 @@ function index() {
     alert("Your URL was sent to be indexed!");
 }
 
-function demandUpdates(){
-    console.log("I WANT UPDATES!");
-    // Mandar mensagem para /searchEngine/systemDetails a pedir updates
-    stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': "I WANT UPDATES!"}));
-}
-
 function newUpdate(update){
     // Alertar quando tem um update
     alert(update);
 }
 
-function test(mes){
-    console.log("Test " + mes);
-}
-
 $(function () {
     connect();
+
+     // Check if user is logged in
+    const user = localStorage.getItem("name");
+    if(user != null){
+        loggedIn(user);
+    }
 
     $( "#index" ).click(function (e) {
         // Indexar o que esta na searchBar
@@ -109,17 +116,18 @@ $(function () {
         // Abrir a página de detalhes do sistema
         test("details");
     });
-
     $( "#login" ).on("submit", function(e) {
         e.preventDefault();
         login();
     });
-
     $( "#register" ).on("submit", function(e) {
         e.preventDefault();
         register();
     });
-
+    $(".logOut").click(function (e){
+        localStorage.removeItem("name");
+        alert("Logged Out!");
+    });
 
     /* mostrar e sair do popup do log in*/
     $("#show-login").click(function(){

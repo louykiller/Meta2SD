@@ -420,10 +420,11 @@
                     <button id="show-register"><p class="signUp">Register</p></button>
                 </div>
             </div>
+
             <div class="total">
                 <div class="popup_login">
                     <div class="close-btn">&times;</div>
-                    <form action="/loginpage" method="post">
+                    <form id="login">
                         <h2 class="title">Login</h2>
                         <br>
                         <div class = "input_single">
@@ -445,63 +446,58 @@
                     </form>
                 </div>
             </div>
-    
+
             <div class="total_register">
                 <div class="popup_register">
                     <div class="close-btn-register">&times;</div>
-                    <form action="/register" method="post">
-                        <h2 class="h2_login_register">Register</h2>
+                    <form id="register">
+                        <h2>Register</h2>
                         <br>
                         <div class = "input_single">
-                        <input class = "input" type="text" id="first_name" name="first_name" required />
-                        <label for = "first_name" >First Name *</label>
+                            <input class = "input" type="text" id="first_name" name="first_name" required />
+                            <label for = "first_name" >First Name *</label>
                         </div>
-                
+
                         <div class = "input_single">
-                        <input class = "input" type="text" id="last_name" name="last_name" required />
-                        <label for = "last_name">Last Name *</label>
+                            <input class = "input" type="text" id="last_name" name="last_name" required />
+                            <label for = "last_name">Last Name *</label>
                         </div>
-                
+
                         <div class = "input_single">
-                        <input class = "input" type="text" id="username" name="username" required />
-                        <label for = "username">Username *</label>
+                            <input class = "input" type="text" id="username" name="username" required />
+                            <label for = "username">Username *</label>
                         </div>
-                
+
                         <div class = "input_single">
-                        <input class = "input" type="email" id="email" name="email"  required/>
-                        <label for = "email">Email *</label>
+                            <input class = "input" type="password" id="password1"  name="password1" required />
+                            <label for = "password1">Password *</label>
                         </div>
-                
+
                         <div class = "input_single">
-                        <input class = "input" type="password" id="password1"  name="password1" required />
-                        <label for = "password1">Password *</label>
+                            <input class= "input" type="password" id="password2" name="password2" required />
+                            <label for = "password2">Confirm Password *</label>
                         </div>
-                
-                        <div class = "input_single">
-                        <input class= "input" type="password" id="password2" name="password2" required
-                        />
-                        <label for = "password2">Confirm Password *</label>
-                        </div>
-                
+
                         <div style ="text-align:center;">
-                        <button id="submitRegister" class = "btn-form" type = "submit">Submit</button>
+                            <button id="submitRegister" class = "btn-form" type = "submit">Submit</button>
                         </div>
-                
+
                         <div class="signUp">
-                        <br>
-                        <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
+                            <br>
+                            <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
                         </div>
                     </form>
                 </div>
             </div>
+
 
             <div id="loggedIn">
                 <ul class="user">
                     <li class="dropdown">
                         <a><img class="photo" src="User.png"></a>
                         <div class="dropdown-menu">
-                            <a style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
-                            
+                            <a id="name" style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
+
                             <a class="logOut" style="display:flex; align-items: center;" href="homepage.html"><img class="logout_image" style="display: flex; justify-content: left;" src="logOut.png">Log out</a>
                         </div>
                     </li>
@@ -526,51 +522,6 @@
                 <a href="#" id="next" class="controllers">Next</a>
             </div>
         </div>
-        <script>
 
-            /* mostrar e sair do popup do log in*/
-            document.querySelector("#show-login").addEventListener("click", function(){
-                document.querySelector(".popup_login").classList.add("active");
-                document.querySelector(".total").style.display ="flex";
-            });
-
-            document.querySelector(".close-btn").addEventListener("click", function(){
-                document.querySelector(".popup_login").classList.remove("active");
-                document.querySelector(".total").style.display = "none";
-            });
-
-            /* mostrar e sair do popup do register*/
-
-            document.querySelector("#show-register").addEventListener("click", function(){
-                document.querySelector(".popup_register").classList.add("active");
-                document.querySelector(".total_register").style.display ="flex";
-            });
-            document.querySelector(".close-btn-register").addEventListener("click", function(){
-                document.querySelector(".popup_register").classList.remove("active");
-                document.querySelector(".total_register").style.display = "none";
-            });
-
-            /* redirecionar para o popup do register */
-            document.querySelector("#redirect_signUp").addEventListener("click", function(){
-                document.querySelector(".popup_login").classList.remove("active");
-                document.querySelector(".total").style.display = "none";
-            });
-            document.querySelector("#redirect_signUp").addEventListener("click", function(){
-                document.querySelector(".popup_register").classList.add("active");
-                document.querySelector(".total_register").style.display = "flex";
-            });
-
-            /* redirecionar para o popup do login */
-            document.querySelector("#redirect_signIn").addEventListener("click", function(){
-                document.querySelector(".popup_register").classList.remove("active");
-                document.querySelector(".total_register").style.display = "none";
-            });
-            document.querySelector("#redirect_signIn").addEventListener("click", function(){
-                document.querySelector(".popup_login").classList.add("active");
-                document.querySelector(".total").style.display = "flex";
-            });
-
-
-        </script>
     </body>
 </html>
