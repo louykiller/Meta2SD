@@ -2,6 +2,7 @@ var stompClient = null;
 var currentResults = null;
 var page = 1;
 var maxPage = 1;
+var hackerNews;
 
 // Codigo maioritariamente do stor
 function connect() {
@@ -22,8 +23,8 @@ function connect() {
         });
         // Subscreve este "canal" para receber as news
         stompClient.subscribe('/search/news', function (message) {
-            // Chama a função displayNews cada vez que recebe uma mensagem
-            displayNews(JSON.parse(message.body).content)
+            // Chama a função getNews cada vez que recebe uma mensagem
+            getNews(JSON.parse(message.body).content)
         });
         // Subscreve este "canal" para gerir o user
         stompClient.subscribe('/search/user', function (message) {
@@ -81,7 +82,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome back' + user["name"],
+                title: 'Welcome back ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -100,7 +101,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome' + user["name"],
+                title: 'Welcome ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -120,8 +121,14 @@ function loggedIn(name){
 
 
 function search() {
+    if($("#searchBar").val() == ""){
+        $("#previous").css("visibility", "hidden");
+        $("#next").css("visibility", "hidden");
+        return;
+    }
     // ir buscar os search terms para fazer a pesquisa
     stompClient.send("/searchEngine/searchTerms", {}, JSON.stringify({'content': $("#searchBar").val()}));
+    stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
 }
 
 function updateResults(current){
@@ -196,15 +203,16 @@ function newUpdate(update){
 
 }
 
-function getNews(){
-    stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
+function getNews(news){
+    hackerNews = JSON.parse(news);
+    console.log(hackerNews);
 }
 
-function displayNews(news){
-    const res = JSON.parse(news);
-    for(let i of res){
-        console.log(i);
-        $("#results").append("<tr><td><a href=\"" + i["url"] + "\">" + i["title"] +"</a></td></tr>");
+function indexNews(){
+    if(hackerNews.length > 0){
+        for(const news of hackerNews){
+            stompClient.send("/searchEngine/indexURL", {}, JSON.stringify({'content': news["url"]}));
+        }
     }
 }
 

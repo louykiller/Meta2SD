@@ -2,11 +2,16 @@ package pt.uc.sd;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -38,17 +43,16 @@ public class MessagingController {
     // devolve os resultados pelo "canal" /search/update
     @MessageMapping("/systemDetails")
     @SendTo("/search/update")
-    public Message updateSystemDetails(Message message) throws InterruptedException {
-        System.out.println("Message: " + message.content());
-        Thread.sleep(2000);
-        // TODO: Sempre que houver uma atualização enviar para o cliente
-        // Por exemplo o updateDownloaderStatus ou updateBarrelStatus
-        return new Message("Update!");
+    public Details updateSystemDetails(Message message) throws InterruptedException, RemoteException, NotBoundException {
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        ArrayList<String> systemDetails = ca.getSystemDetails();
+        ArrayList<String> topSearches = ca.getTopSearches();
+        return new Details(systemDetails, topSearches);
     }
 
     @MessageMapping("/getNews")
     @SendTo("/search/news")
-    public Message getNews(Message searchTerms) throws InterruptedException, RemoteException, NotBoundException {
+    public Message getNews(Message searchTerms) throws InterruptedException, IOException, NotBoundException {
         String search = searchTerms.content();
         if (search == null) {
             return null;
@@ -59,23 +63,31 @@ public class MessagingController {
         List hackerNewsNewTopStories = restTemplate.getForObject(topStoriesEndpoint, List.class);
         assert hackerNewsNewTopStories != null;
 
-        // TODO: Indexar todas as noticias com os searchTerms
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         // Guardar todas as stories que tenham os searchTerms
         List<HackerNewsItemRecord> hackerNewsItemRecordList = new ArrayList<>();
         for (int i = 0; i <= hackerNewsNewTopStories.size(); i++) {
+            // Fazer so as primeiras 50
+            if(i == 50) break;
             // Ir buscar o URL da story
             Integer storyId = (Integer) hackerNewsNewTopStories.get(i);
             String storyItemDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
             HackerNewsItemRecord hackerNewsItemRecord = restTemplate.getForObject(storyItemDetailsEndpoint, HackerNewsItemRecord.class);
-            if (hackerNewsItemRecord == null) { continue; }
+            // Verificar se existe e se o URL existe
+            if (hackerNewsItemRecord == null || hackerNewsItemRecord.url() == null) { continue; }
+            System.out.println("News number " + i + ": " + hackerNewsItemRecord.title() + " - " + hackerNewsItemRecord.url());
             // Verificar se contem os searchTerms
             List<String> searchTermsList = List.of(search.toLowerCase().split(" "));
-            // TODO: Fazer para o texto do url e não para o titulo
-            // Se sim adicionar à lista
-            if (searchTermsList.stream().anyMatch(hackerNewsItemRecord.title().toLowerCase()::contains)) {
-                hackerNewsItemRecordList.add(hackerNewsItemRecord);
-                ca.indexURL(hackerNewsItemRecord.url());
+            try {
+                // Aceder ao url
+                String doc = Jsoup.connect(hackerNewsItemRecord.url()).get().text();
+                // Se sim adicionar à lista
+                if (searchTermsList.stream().anyMatch(doc.toLowerCase()::contains)) {
+                    System.out.println("Found!");
+                    hackerNewsItemRecordList.add(hackerNewsItemRecord);
+                }
+            } catch (Exception e){
+                continue;
             }
         }
         // Mandar em formato JSON

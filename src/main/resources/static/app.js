@@ -70,7 +70,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome back' + user["name"],
+                title: 'Welcome back ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -89,7 +89,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome' + user["name"],
+                title: 'Welcome ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -120,13 +120,7 @@ function index() {
 }
 
 function newUpdate(update){
-    // Alertar quando tem um update
-    Swal.fire({
-        title:"New Update!",
-        text: update,
-        icon: 'info',
-        confirmButtonText: 'Ok'
-      })
+    console.log(update);
 }
 
 $(function () {
@@ -144,7 +138,8 @@ $(function () {
     });
     $( "#details" ).click(function (e) {
         // Abrir a página de detalhes do sistema
-        test("details");
+        stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': "updates please"}));
+
     });
     $( "#login" ).on("submit", function(e) {
         e.preventDefault();

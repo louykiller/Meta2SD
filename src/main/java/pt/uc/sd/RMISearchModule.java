@@ -11,10 +11,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class RMISearchModule extends UnicastRemoteObject implements ServerActions, Runnable {
     private final List<String> urlsQueue;
@@ -139,6 +136,20 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
         } catch (NotBoundException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<String> getSystemDetails() throws RemoteException{
+        ArrayList<String> systemElements = new ArrayList<>();
+        for(SystemElements entry : elements.values()){
+            systemElements.add(entry.toString());
+        }
+        Collections.sort(systemElements);
+        return systemElements;
+    }
+
+    public ArrayList<String> getTopSearches() throws RemoteException {
+        // TODO: Ordenar
+        return (ArrayList<String>) searches.keySet();
     }
 
     public void run() {
