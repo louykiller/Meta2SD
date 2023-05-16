@@ -374,31 +374,8 @@
 
             .details_list{
                 list-style-type:none;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                max-width:max-content;
             }
 
-            .active{
-                border-radius: 10px;
-                padding-top: 25px;
-                padding-bottom: 25px;
-                padding-right: 70px;
-                padding-left: 12px;
-                padding-left: 15px;
-                margin-right: 12px;
-                max-width:max-content;
-            }
-
-            .deactive{
-                border-radius: 10px;
-                padding-top: 25px;
-                padding-bottom: 25px;
-                padding-right: 70px;
-                padding-left: 15px;
-                max-width:max-content;
-            }
 
             .detail_item{
                 padding:7px;
@@ -461,28 +438,29 @@
                 <button id="show-register"><p class="signUp">Register</p></button>
             </div>
         </div>
+
         <div class="total">
             <div class="popup_login">
                 <div class="close-btn">&times;</div>
-                <form action="/loginpage" method="post">
-                    <h2 class="h2_login_register">Login</h2>
+                <form id="login">
+                    <h2 class="title">Login</h2>
                     <br>
                     <div class = "input_single">
-                    <input class = "input" type="text" id="username" name="username" required />
-                    <label for  = "username" > Username * </label>
+                        <input class = "input" type="text" id="usernameLogin" name="username" required />
+                        <label for  = "usernameLogin" > Username * </label>
                     </div>
                     <div class = "input_single">
-                    <input class = "input" type="password" id="password1"  name="password1" required />
-                    <label for  = "password1" > Password *</label>
+                        <input class = "input" type="password" id="passwordLogin"  name="password1" required />
+                        <label for  = "passwordLogin" > Password *</label>
                     </div>
                     <div style ="text-align:center;">
-                    <button  class = "btn-form" type = "submit">Submit</button>
+                        <button id="submitLogin" class = "btn-form" type = "submit">Submit</button>
                     </div>
                     <div class="signUp">
-                    <br>
-                    <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
+                        <br>
+                        <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -490,59 +468,54 @@
         <div class="total_register">
             <div class="popup_register">
                 <div class="close-btn-register">&times;</div>
-                <form action="/register" method="post">
-                    <h2 class="h2_login_register">Register</h2>
+                <form id="register">
+                    <h2>Register</h2>
                     <br>
                     <div class = "input_single">
-                    <input class = "input" type="text" id="first_name" name="first_name" required />
-                    <label for = "first_name" >First Name *</label>
+                        <input class = "input" type="text" id="first_name" name="first_name" required />
+                        <label for = "first_name" >First Name *</label>
                     </div>
-            
+
                     <div class = "input_single">
-                    <input class = "input" type="text" id="last_name" name="last_name" required />
-                    <label for = "last_name">Last Name *</label>
+                        <input class = "input" type="text" id="last_name" name="last_name" required />
+                        <label for = "last_name">Last Name *</label>
                     </div>
-            
+
                     <div class = "input_single">
-                    <input class = "input" type="text" id="username" name="username" required />
-                    <label for = "username">Username *</label>
+                        <input class = "input" type="text" id="username" name="username" required />
+                        <label for = "username">Username *</label>
                     </div>
-            
+
                     <div class = "input_single">
-                    <input class = "input" type="email" id="email" name="email"  required/>
-                    <label for = "email">Email *</label>
+                        <input class = "input" type="password" id="password1"  name="password1" required />
+                        <label for = "password1">Password *</label>
                     </div>
-            
+
                     <div class = "input_single">
-                    <input class = "input" type="password" id="password1"  name="password1" required />
-                    <label for = "password1">Password *</label>
+                        <input class= "input" type="password" id="password2" name="password2" required />
+                        <label for = "password2">Confirm Password *</label>
                     </div>
-            
-                    <div class = "input_single">
-                    <input class= "input" type="password" id="password2" name="password2" required
-                    />
-                    <label for = "password2">Confirm Password *</label>
-                    </div>
-            
+
                     <div style ="text-align:center;">
-                    <button class = "btn-form" type = "submit">Submit</button>
+                        <button id="submitRegister" class = "btn-form" type = "submit">Submit</button>
                     </div>
-            
+
                     <div class="signUp">
-                    <br>
-                    <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
+                        <br>
+                        <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>
                     </div>
                 </form>
             </div>
         </div>
+
 
         <div id="loggedIn">
             <ul class="user">
                 <li class="dropdown">
                     <a><img class="photo" src="User.png"></a>
                     <div class="dropdown-menu">
-                        <a style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
-                        
+                        <a id="name" style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
+
                         <a class="logOut" style="display:flex; align-items: center;" href="homepage.html"><img class="logout_image" style="display: flex; justify-content: left;" src="logOut.png">Log out</a>
                     </div>
                 </li>
@@ -553,25 +526,18 @@
         <div class="details">
             <h2>System Details</h2>
             <div class="details_list">
-                <div class="active"> 
-                    <li style="font-weight: bold; font-size: 20px;margin-left: 7px;text-decoration: underline;margin-bottom: 12px;">Active
-                        <li class="detail_item">Downloader 3 - port 5000</li>
-                        <li class="detail_item">Downloader 6 - port 5002</li>
-                        <li class="detail_item">Downloader 38 - port 5004</li>
-                        <li class="detail_item">Downloader 2 - port 5006</li>
-                        <li class="detail_item">Downloader 10 - port 5010</li>
-                        <li class="detail_item">Downloader 20 - port 5005</li>
-                        <li class="detail_item">Downloader 25 - port 5007</li>
-                        <li class="detail_item">Downloader 7 - port 5009</li>
-                        <li class="detail_item">Downloader 1 - port 5003</li>
-                    </li>    
-                </div>
-                <div class="deactive">
-                    <li style="font-weight: bold; font-size: 20px;margin-left: 7px;text-decoration: underline;margin-bottom: 12px;">Deactive
-                        <li class="detail_item">Downloader 5 - port 5001</li>
-                        <li class="detail_item">Downloader 9 - port 5008</li>
+                    <li class="detail_item">Downloader 3 - port 5000 - Active</li>
+                    <li class="detail_item">Downloader 6 - port 5002</li>
+                    <li class="detail_item">Downloader 38 - port 5004</li>
+                    <li class="detail_item">Downloader 2 - port 5006</li>
+                    <li class="detail_item">Downloader 10 - port 5010</li>
+                    <li class="detail_item">Downloader 20 - port 5005</li>
+                    <li class="detail_item">Downloader 25 - port 5007</li>
+                    <li class="detail_item">Downloader 7 - port 5009</li>
+                    <li class="detail_item">Downloader 1 - port 5003</li>
+                    <li class="detail_item">Downloader 5 - port 5001</li>
+                    <li class="detail_item">Downloader 9 - port 5008</li>
                     </li>
-                </div>
 
             </div>
         </div>
