@@ -21,20 +21,15 @@ public class MessagingController {
     @MessageMapping("/searchTerms")
     @SendTo("/search/results")
     public Message search(Message searchTerms) throws InterruptedException, RemoteException, NotBoundException {
-        System.out.println("Search for " + searchTerms.content());
-        // TODO: Chamar RMI do search e devolver os search results em JSON
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<SearchResult> results = ca.search(searchTerms.content());
-
-        String json = new Gson().toJson(results);
-        return new Message(json);
+        return new Message(new Gson().toJson(results));
     }
 
     // Função que recebe URLS para indexar mandados para /searchEngine/indexURL
     @MessageMapping("/indexURL")
     public void indexURL(Message url) throws InterruptedException, RemoteException, NotBoundException {
         System.out.println("URL received " + url.content());
-        // TODO: Indexar URL
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ca.indexURL(url.content());
     }
@@ -89,13 +84,24 @@ public class MessagingController {
     }
 
 
-    @MessageMapping("/userAction")
-    @SendTo("/user")
-    public Message userAction(Message message) throws InterruptedException {
-        System.out.println("Message: " + message);
+    @MessageMapping("/login")
+    @SendTo("/search/user")
+    public UserInfo login(UserInfo user) throws InterruptedException, RemoteException, NotBoundException {
+        System.out.println("Message: " + user);
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        User u = ca.login(user.username(), user.password());
+        if(u == null) return new UserInfo(null, null, null, "login");
+        return new UserInfo(u.name, u.username, null, "login");
+    }
 
-
-        return new Message("Nothing yet!");
+    @MessageMapping("/register")
+    @SendTo("/search/user")
+    public UserInfo register(UserInfo user) throws InterruptedException, RemoteException, NotBoundException {
+        System.out.println("Message: " + user);
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        User u = ca.register(user.username(), user.password(), user.name());
+        if(u == null) return new UserInfo(null, null, null, "register");
+        return new UserInfo(u.name, u.username, null, "register");
     }
 
 }
