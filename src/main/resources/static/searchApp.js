@@ -82,7 +82,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome back' + user["name"],
+                title: 'Welcome back ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -101,7 +101,7 @@ function userAction(user){
         }
         else {
             Swal.fire({
-                title: 'Welcome' + user["name"],
+                title: 'Welcome ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
@@ -121,6 +121,11 @@ function loggedIn(name){
 
 
 function search() {
+    if($("#searchBar").val() == ""){
+        $("#previous").css("visibility", "hidden");
+        $("#next").css("visibility", "hidden");
+        return;
+    }
     // ir buscar os search terms para fazer a pesquisa
     stompClient.send("/searchEngine/searchTerms", {}, JSON.stringify({'content': $("#searchBar").val()}));
     stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));

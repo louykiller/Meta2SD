@@ -14,4 +14,6 @@ public interface ServerActions extends Remote {
     void updateDownloaderStatus(boolean active, int id, int port) throws RemoteException;
     void updateBarrelStatus(boolean active, int id, int port) throws RemoteException;
     void printSystemDetails() throws RemoteException;
+    public ArrayList<String> getSystemDetails() throws RemoteException;
+    public ArrayList<String> getTopSearches() throws RemoteException;
 }
