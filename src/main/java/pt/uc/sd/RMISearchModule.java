@@ -149,7 +149,7 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
 
     public ArrayList<String> getTopSearches() throws RemoteException {
         // TODO: Ordenar
-        return (ArrayList<String>) searches.keySet();
+        return new ArrayList<>(searches.keySet());
     }
 
     public void run() {

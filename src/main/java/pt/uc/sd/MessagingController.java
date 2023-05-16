@@ -42,7 +42,7 @@ public class MessagingController {
     // Função que vai receber os pedidos de update mandados para /searchEngine/systemDetails e
     // devolve os resultados pelo "canal" /search/update
     @MessageMapping("/systemDetails")
-    @SendTo("/search/update")
+    @SendTo("/search/system")
     public Details updateSystemDetails(Message message) throws InterruptedException, RemoteException, NotBoundException {
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<String> systemDetails = ca.getSystemDetails();
@@ -93,6 +93,37 @@ public class MessagingController {
         // Mandar em formato JSON
         String json = new Gson().toJson(hackerNewsItemRecordList);
         return new Message(json);
+    }
+
+    @MessageMapping("/indexStories")
+    @SendTo("/search/update")
+    public Message indexStories(Message username) throws InterruptedException, IOException, NotBoundException {
+        String name = username.content();
+        System.out.println(name);
+        String userEndpoint = "https://hacker-news.firebaseio.com/v0/user/" + name + ".json?print=pretty";
+        // Buscar todas as top stories
+        RestTemplate restTemplate = new RestTemplate();
+        HackerNewsUserRecord user = restTemplate.getForObject(userEndpoint, HackerNewsUserRecord.class);
+        assert user != null;
+        System.out.println(user.submitted().size());
+        // Ir buscar todas as stories
+        List<HackerNewsItemRecord> hackerNewsItemRecordList = new ArrayList<>();
+        for (int i = 0; i < user.submitted().size(); i++) {
+            // Ir buscar o URL da story
+            Integer storyId = (Integer) user.submitted().get(i);
+            String storyItemDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
+            HackerNewsItemRecord hackerNewsItemRecord = restTemplate.getForObject(storyItemDetailsEndpoint, HackerNewsItemRecord.class);
+            // Verificar se existe, se é uma story e se o URL existe
+            if (hackerNewsItemRecord == null || !hackerNewsItemRecord.type().equals("story") || hackerNewsItemRecord.url() == null) { continue; }
+            hackerNewsItemRecordList.add(hackerNewsItemRecord);
+            System.out.println("Added story: " + hackerNewsItemRecord.title());
+        }
+        // Indexar todos
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        for(HackerNewsItemRecord story : hackerNewsItemRecordList){
+            ca.indexURL(story.url());
+        }
+        return new Message("Indexed " + hackerNewsItemRecordList.size() + " stories from " + name);
     }
 
 

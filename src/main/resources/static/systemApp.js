@@ -9,9 +9,9 @@ function connect() {
         //setConnected(true);
         console.log('Connected: ' + frame);
         // Subscreve este "canal" para receber os system updates
-        stompClient.subscribe('/search/update', function (message) {
+        stompClient.subscribe('/search/system', function (message) {
             // Chama a função newUpdate cada vez que recebe uma mensagem
-            newUpdate(JSON.parse(message.body).content)
+            systemDetails(JSON.parse(message.body))
         });
         // Subscreve este "canal" para gerir o user
         stompClient.subscribe('/search/user', function (message) {
@@ -105,52 +105,20 @@ function loggedIn(name){
     localStorage.setItem("name", name);
 }
 
-async function index() {
-    const { value: input } = await Swal.fire({
-      title: 'Index',
-      input: 'text',
-      inputLabel: 'Enter a URL or a Hacker News username',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        if (!value) {
-          return 'You need to write something!'
-        }
-      }
-    });
-    console.log(input);
-    // Se for um url
-    if(input.startsWith('https://') || input.startsWith('http://')){
-        // Mandar URL para indexar para /searchEngine/indexURL
-        stompClient.send("/searchEngine/indexURL", {}, JSON.stringify({'content': input}));
-        Swal.fire({
-            title:"URL sent to be indexed",
-            icon: 'info',
-            confirmButtonText: 'Ok'
-        });
+function systemDetails(details){
+    console.log(details);
+    for(let detail of details["systemDetails"]){
+        $(".details_list").append('<li class="detail_item">' + detail + '</li>');
     }
-    // Se for um username
-    else {
-        Swal.fire({
-            title:'All the stories of ' + input + ' will be indexed',
-            icon: 'info',
-            confirmButtonText: 'Ok'
-        });
-        stompClient.send("/searchEngine/indexStories", {}, JSON.stringify({'content': input}));
+    for(let search of details["topSearches"]){
+        $(".top_list").append('<li class="top_item"><a href="./searchpage.html?searchTerms=' + search + '">' + search + '</a></li>');
     }
-
 }
 
-function newUpdate(update){
-    Swal.fire({
-        title:'New Update!',
-        text: update,
-        icon: 'info',
-        confirmButtonText: 'Ok'
-    });
-}
 
 $(function () {
     connect();
+    setTimeout(() => { stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': 'details please'})); }, 200);
 
      // Check if user is logged in
     const user = localStorage.getItem("name");
@@ -158,10 +126,6 @@ $(function () {
         loggedIn(user);
     }
 
-    $( "#index" ).click(function (e) {
-        // Indexar o que esta na searchBar
-        index();
-    });
     $( "#details" ).click(function (e) {
         // Abrir a página de detalhes do sistema
         stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': "updates please"}));
