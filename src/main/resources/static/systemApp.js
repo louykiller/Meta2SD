@@ -110,7 +110,9 @@ function systemDetails(details){
     for(let detail of details["systemDetails"]){
         $(".details_list").append('<li class="detail_item">' + detail + '</li>');
     }
+    let i = 0;
     for(let search of details["topSearches"]){
+        if(i++ == 10) break;
         $(".top_list").append('<li class="top_item"><a href="./searchpage.html?searchTerms=' + search + '">' + search + '</a></li>');
     }
 }
