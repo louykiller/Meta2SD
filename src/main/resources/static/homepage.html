@@ -7,6 +7,8 @@
         <script src="/webjars/jquery/jquery.min.js"></script>
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="sweetalert2.all.min.js"></script>
         <script src="/app.js"></script>
         <style>
             *{
@@ -429,7 +431,7 @@
                     <br>
                     <p>Not registered yet? <a  id="redirect_signUp" style ="color:#008DB9;size:15px">Register</a></p>
                     </div>
-                    
+
                 </form>
             </div>
         </div>
@@ -444,31 +446,31 @@
                 <input class = "input" type="text" id="first_name" name="first_name" required />
                 <label for = "first_name" >First Name *</label>
                 </div>
-        
+
                 <div class = "input_single">
                 <input class = "input" type="text" id="last_name" name="last_name" required />
                 <label for = "last_name">Last Name *</label>
                 </div>
-        
+
                 <div class = "input_single">
                 <input class = "input" type="text" id="username" name="username" required />
                 <label for = "username">Username *</label>
                 </div>
-        
+
                 <div class = "input_single">
                 <input class = "input" type="password" id="password1"  name="password1" required />
                 <label for = "password1">Password *</label>
                 </div>
-        
+
                 <div class = "input_single">
                 <input class= "input" type="password" id="password2" name="password2" required />
                 <label for = "password2">Confirm Password *</label>
                 </div>
-        
+
                 <div style ="text-align:center;">
                 <button id="submitRegister" class = "btn-form" type = "submit">Submit</button>
                 </div>
-        
+
                 <div class="signUp">
                 <br>
                 <p>Already registered? <a id="redirect_signIn" style ="color:#008DB9">Log In</a></p>

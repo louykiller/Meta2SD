@@ -1,6 +1,7 @@
 var stompClient = null;
 var currentResults = null;
-var counter = 0;
+var page = 1;
+var maxPage = 1;
 
 // Codigo maioritariamente do stor
 function connect() {
@@ -102,22 +103,27 @@ function search() {
     stompClient.send("/searchEngine/searchTerms", {}, JSON.stringify({'content': $("#searchBar").val()}));
 }
 
-// Função que recebe os resultados da pesquisa
-function showResults(result) {
-    const res = JSON.parse(result);
-    console.log(result);
-
-    // Guardar os novos resultados
-    currentResults = res;
-    counter = 0;
-    // Alterar o number of results
-    $("#resultsCount").text("x resultados encontrados");
-    let i = 0;
-    // Adiciona os resultados à lista
-    for(let r of res){
-        if(i == 10) break;
-
-        //$("#results").append("<tr><td>" + r["title"] + "</td><td><a href=\"" + r["url"] + "\">" + r["url"] + "</td><td>" + r["citation"] + "</td></tr>");
+function updateResults(current){
+    // Remover o previous se for a primeira pagina
+    if(current == 1){
+        $("#previous").css("visibility", "hidden");
+    } else {
+        $("#previous").css("visibility", "visible");
+    }
+    // Remover o next se for a última página
+    if(current == maxPage){
+        $("#next").css("visibility", "hidden");
+    } else{
+        $("#next").css("visibility", "visible");
+    }
+    // Atualizar a lista e os numeros
+    $("#page" + page).removeClass("current_number");
+    $("#page" + page).addClass("number");
+    $("#page" + current).removeClass("number");
+    $("#page" + current).addClass("current_number");
+    $(".link").empty();
+    for(let i = (current - 1) * 10; i < ( (current - 1) * 10) + 10 && i < currentResults.length; i++){
+        const r = currentResults[i];
         $(".link").append('<a class="title" href="' + r["url"] + '"><p>' + r["url"] + '</p>' +
                           '<h2>' + r["title"] + '</h2></a>' +
                           '<p class="citation">' + r["citation"] + '</p>');
@@ -126,7 +132,34 @@ function showResults(result) {
         <h2>UC Student - Universidade de Coimbra</h2></a>
         <p class="citation">Citation</p>
         */
-        i++;
+    }
+    page = current;
+}
+
+// Função que recebe os resultados da pesquisa
+function showResults(result) {
+    const res = JSON.parse(result);
+    // Guardar os novos resultados
+    currentResults = res;
+    page = 1;
+    maxPage = parseInt((res.length - 1) / 10) + 1;
+    // Alterar o resultsCount
+    if(res.length == 0){
+        $("#resultsCount").text("0 resultados encontrados");
+        $("#previous").css("visibility", "hidden");
+        $("#next").css("visibility", "hidden");
+    } else {
+        $("#resultsCount").text(res.length + " resultados encontrados");
+        $(".numbers").empty();
+        // Adicionar o numero de paginas necessárias
+        for(let i = 0; i < maxPage; i++){
+            const n = i + 1;
+            $(".numbers").append('<a id="page' + n + '" class="number">' + n + '</a>');
+            $("#page" + n).click(function(e) {
+                updateResults(n);
+            });
+        }
+        updateResults(page);
     }
 }
 
@@ -179,6 +212,14 @@ $(function () {
     $(".logOut").click(function (e){
         localStorage.removeItem("name");
         alert("Logged Out!");
+    });
+
+    $("#previous").click(function (e){
+        updateResults(page - 1);
+    });
+
+    $("#next").click(function (e){
+        updateResults(page + 1);
     });
 
     /* mostrar e sair do popup do log in*/

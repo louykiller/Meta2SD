@@ -58,7 +58,12 @@ function userAction(user){
     console.log(user);
     if(user["action"] == "login"){
         if(user["username"] == null){
-            alert("Couldn't log in. Invalid username/password");
+            Swal.fire({
+              title: 'Error!',
+              text: 'Couldn\'t log in. Invalid username/password',
+              icon: 'error',
+              confirmButtonText: 'Ok'
+            })
         }
         else {
             alert("Logged In. Welcome back " + user["name"]);
