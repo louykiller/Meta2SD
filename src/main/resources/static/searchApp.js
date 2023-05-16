@@ -27,7 +27,7 @@ function connect() {
         // Subscreve este "canal" para gerir o user
         stompClient.subscribe('/user', function (message) {
             // Chama a função manageUser cada vez que recebe uma mensagem
-            manageUser(JSON.parse(message.body).content)
+            manageUser(JSON.parse(message.body))
         });
     });
 }

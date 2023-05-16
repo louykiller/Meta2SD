@@ -33,7 +33,6 @@ public class MessagingController {
     @MessageMapping("/indexURL")
     public void indexURL(Message url) throws InterruptedException, RemoteException, NotBoundException {
         System.out.println("URL received " + url.content());
-        // TODO: Indexar URL
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ca.indexURL(url.content());
     }
@@ -88,13 +87,24 @@ public class MessagingController {
     }
 
 
-    @MessageMapping("/userAction")
-    @SendTo("/user")
-    public Message userAction(Message message) throws InterruptedException {
-        System.out.println("Message: " + message);
+    @MessageMapping("/login")
+    @SendTo("/search/user")
+    public UserInfo login(UserInfo user) throws InterruptedException, RemoteException, NotBoundException {
+        System.out.println("Message: " + user);
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        User u = ca.login(user.username(), user.password());
+        if(u == null) return new UserInfo(null, null, null, "login");
+        return new UserInfo(u.name, u.username, null, "login");
+    }
 
-
-        return new Message("Nothing yet!");
+    @MessageMapping("/register")
+    @SendTo("/search/user")
+    public UserInfo register(UserInfo user) throws InterruptedException, RemoteException, NotBoundException {
+        System.out.println("Message: " + user);
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        User u = ca.register(user.username(), user.password(), user.name());
+        if(u == null) return new UserInfo(null, null, null, "register");
+        return new UserInfo(u.name, u.username, null, "register");
     }
 
 }

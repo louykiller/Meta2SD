@@ -1,4 +1,6 @@
 var stompClient = null;
+var user = null;
+
 
 // Codigo maioritariamente do stor
 function connect() {
@@ -13,9 +15,9 @@ function connect() {
             newUpdate(JSON.parse(message.body).content)
         });
         // Subscreve este "canal" para gerir o user
-        stompClient.subscribe('/user', function (message) {
-            // Chama a função manageUser cada vez que recebe uma mensagem
-            manageUser(JSON.parse(message.body).content)
+        stompClient.subscribe('/search/user', function (message) {
+            // Chama a função userAction cada vez que recebe uma mensagem
+            userAction(JSON.parse(message.body))
         });
     });
 }
@@ -29,15 +31,47 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function manageUser(message){
-    console.log(message);
+function login(){
+    const username = $( "#usernameLogin" ).val();
+    const password = $( "#passwordLogin" ).val();
+    let json = {'username': username, 'password': password};
+    stompClient.send("/searchEngine/login", {}, JSON.stringify(json));
 }
 
-// TODO: ainda por fazer
-function userAction(){
-    let json = {'action': 'login', 'username': 'username', 'password': 'password'};
-    console.log(json);
-    stompClient.send("/searchEngine/userAction", {}, JSON.stringify(json));
+function register(){
+    const name = $( "#first_name" ).val() + ' ' + $( "#last_name" ).val();
+    const username = $( "#username" ).val();
+    const password1 = $( "#password1" ).val();
+    const password2 = $( "#password2" ).val();
+    if(password1 !== password2){
+       console.log("Passwords dont match");
+       // TODO: Notificacao
+    }
+    else{
+        let json = {'name': name, 'username': username, 'password': password1};
+        console.log(json);
+        stompClient.send("/searchEngine/register", {}, JSON.stringify(json));
+    }
+}
+
+function userAction(user){
+    console.log(user);
+    if(user["action"] == "login"){
+        if(user["username"] == null){
+            alert("Couldn't log in. Invalid username/password");
+        }
+        else {
+            alert("Logged In. Welcome back " + user["name"]);
+        }
+    }
+    else {
+            if(user["username"] == null){
+                alert("Couldn't register. username already in use");
+            }
+            else {
+                alert("Registered. Welcome " + user["name"]);
+            }
+    }
 }
 
 function index() {
@@ -76,14 +110,14 @@ $(function () {
         test("details");
     });
 
-    $( "#submitLogin" ).click(function(e) {
+    $( "#login" ).on("submit", function(e) {
         e.preventDefault();
-        test("Logged In " + $("#usernameLogin").val());
+        login();
     });
 
-    $( "#submitRegister" ).click(function(e) {
+    $( "#register" ).on("submit", function(e) {
         e.preventDefault();
-        test("Registered " + $("#username").val());
+        register();
     });
 
 
