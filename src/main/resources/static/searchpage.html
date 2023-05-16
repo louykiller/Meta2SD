@@ -344,7 +344,64 @@
         /* TODO: SÓ APARECER DEPOIS DA PRIMEIRA PÁGINA E NEXT NA ULTIMA PÁGINA
                 O NÚMERO FICAR COM COR QUANDO ESTIVER NA PÁGINA DELE */
         
+                .user{
+                position:absolute;
+                top: 10px;
+                right: 0;
+                margin-right: 20px;
+                list-style: none;
+                
+            }
 
+            .photo{
+                width: 40px;
+            }
+
+            .user li{
+                display: inline-block;
+            }
+            .dropdown-menu{
+                border-radius: 10px;
+                background-color: #f6f6f6;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-right: 70px;
+                padding-left: 5px;
+                margin-top: 45px;
+                margin-right: -40px;
+                display: none;
+                vertical-align: center;
+                text-align: left;
+
+            }
+            .dropdown-menu a{
+                display:block; ;
+                border-radius: 50px;
+                padding:10px;
+                padding-right: 20px;
+                margin-bottom: 10px;
+
+            }
+            .dropdown-menu a:hover{
+                background-color: #d7d6d6;  
+            }
+            .dropdown:hover .dropdown-menu{
+                display: block;
+                float: left;
+            }
+            .logOut{
+                color:#006d8e;
+                text-decoration: none;
+                
+            }
+            .logout_image{
+                width: 35px;
+                padding-right: 10px;
+            }
+            /* quando fizer log out ir para a home page com o login e register buttons */
+            #loggedIn{
+                visibility: hidden;
+            }
 
         </style>
     </head>
@@ -357,10 +414,11 @@
                     <button id="search" type="submit"><img class="search-icon" src="Search_Button.png"></button>
                 </form>
             </div>
-
-            <div class="sign">
-                <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
-                <button id="show-register"><p class="signUp">Register</p></button>
+            <div id="loggedOff">
+                <div class="sign">
+                    <button style="color:white;background-color: transparent; border: 0;" id="show-login"><p class="signIn">Login </p></button>
+                    <button id="show-register"><p class="signUp">Register</p></button>
+                </div>
             </div>
             <div class="total">
                 <div class="popup_login">
@@ -436,6 +494,21 @@
                     </form>
                 </div>
             </div>
+
+            <div id="loggedIn">
+                <ul class="user">
+                    <li class="dropdown">
+                        <a><img class="photo" src="User.png"></a>
+                        <div class="dropdown-menu">
+                            <a style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">lourenco carvalho</a>
+                            
+                            <a class="logOut" style="display:flex; align-items: center;" href="homepage.html"><img class="logout_image" style="display: flex; justify-content: left;" src="logOut.png">Log out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        
+
             <div class="results">
                 <p id="resultsCount" style="margin-bottom: 30px;color: #707070;">0 resultados encontrados</p>
                 <div class="link">
@@ -443,6 +516,7 @@
                 </div>
                 <br><br><br>
             </div>
+
             <div class="bar_number">
                 <a href="" id="previous" class="controllers"> Previous</a>
                 <a href="page" class="number">1</a>

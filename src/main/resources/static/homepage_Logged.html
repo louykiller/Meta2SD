@@ -10,8 +10,143 @@
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
         <script src="/app.js"></script>
-      
+        <style>
+            *{
+                margin:0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family:Arial, Helvetica, sans-serif;
+            }
 
+            body{
+                background-color: white;
+            }
+            h1{
+                margin: 20px;
+                color: #008DB9;
+                font-size: 100px;
+            }
+            .container{
+                width:100%;
+                min-height: 100vh;
+                display:flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .search-bar{
+                width: 40%;
+                max-width: 700px;
+                border: 2px solid #C3C3C3;
+                display: flex;
+                align-items: center;
+                border-radius: 60px;
+                padding: 0px 10px;
+            }
+
+            .search-bar input{
+                background-color: transparent;
+                flex: 1;
+                border: 0;
+                outline: none;
+                padding: 10px 10px;
+                font-size: 20px;
+                color: black
+            }
+
+            ::placeholder{
+                color: gray
+            }
+
+            .search-bar button{
+                border:0;
+                border-radius: 50%;
+                cursor: pointer;
+                margin-right: 20px;
+                background-color: transparent;
+            }
+            .search{
+                width: 20px;
+                opacity: 80%;
+            }
+            
+            .btn{
+                border-radius: 10px;
+                background-color: #d8d6d6;
+                margin: 2px;
+                border:0;
+                text-align: center;
+                padding: 10px 10px;
+                margin-top: 20px;
+                color:#303030;
+                font-size: 15px;
+                
+            }
+
+            .btn:hover{
+                background-color: #e9e7e7;
+            }
+
+            .user{
+                position:absolute;
+                top: 10px;
+                right: 0;
+                margin-right: 20px;
+                list-style: none;
+                
+            }
+
+            .photo{
+                width: 40px;
+            }
+
+            .user li{
+                display: inline-block;
+            }
+            .dropdown-menu{
+                border-radius: 10px;
+                background-color: #f6f6f6;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                padding-right: 70px;
+                padding-left: 5px;
+                margin-top: 45px;
+                margin-right: -40px;
+                display: none;
+                vertical-align: center;
+                text-align: left;
+
+            }
+            .dropdown-menu a{
+                display:block; ;
+                border-radius: 50px;
+                padding:10px;
+                padding-right: 20px;
+                margin-bottom: 10px;
+
+            }
+            .dropdown-menu a:hover{
+                background-color: #d7d6d6;
+                
+            }
+            .dropdown:hover .dropdown-menu{
+                display: block;
+                float: left;
+            }
+            .logOut{
+                color:#006d8e;
+                text-decoration: none;
+                
+            }
+            .logout_image{
+                width: 35px;
+                padding-right: 10px;
+            }
+
+
+        </style>
     </head>
     <body>
         <div class ="container">
@@ -25,33 +160,18 @@
                 <button id="index" class="btn">Index URL</button>
             </div>
         </div>
-       <!-- Default dropleft button -->
-        <div class="btn-group dropleft">
-            <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Dropleft
-            </button>
-            <div class="dropdown-menu">
-            <!-- Dropdown menu links -->
-            </div>
-        </div>
-        
-        <!-- Split dropleft button -->
-        <div class="btn-group">
-            <div class="btn-group dropleft" role="group">
-            <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="sr-only">Toggle Dropleft</span>
-            </button>
-            <div class="dropdown-menu">
-                <!-- Dropdown menu links -->
-            </div>
-            </div>
-            <button type="button" class="btn btn-secondary">
-            Split dropleft
-            </button>
-        </div>
+        <div id="loggedIn">
+        <ul class="user">
+            <li class="dropdown">
+                <a><img class="photo" src="User.png"></a>
+                <div class="dropdown-menu">
+                    <a style="display:flex; justify-content: center; align-items: center;"><img class="logout_image" src="User_Icon.png">Username</a>
                     
-          
-        
+                    <a class="logOut" style="display:flex; align-items: center;" href="homepage.html"><img class="logout_image" style="display: flex; justify-content: left;" src="logOut.png">Log out</a>
+                </div>
+            </li>
+        </ul>
+    </div>
     
     </body>
 </html>
