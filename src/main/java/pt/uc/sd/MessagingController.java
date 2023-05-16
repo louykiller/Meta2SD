@@ -2,11 +2,16 @@ package pt.uc.sd;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.jsoup.HttpStatusException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -48,7 +53,7 @@ public class MessagingController {
 
     @MessageMapping("/getNews")
     @SendTo("/search/news")
-    public Message getNews(Message searchTerms) throws InterruptedException, RemoteException, NotBoundException {
+    public Message getNews(Message searchTerms) throws InterruptedException, IOException, NotBoundException {
         String search = searchTerms.content();
         if (search == null) {
             return null;
@@ -68,14 +73,21 @@ public class MessagingController {
             Integer storyId = (Integer) hackerNewsNewTopStories.get(i);
             String storyItemDetailsEndpoint = String.format("https://hacker-news.firebaseio.com/v0/item/%s.json?print=pretty", storyId);
             HackerNewsItemRecord hackerNewsItemRecord = restTemplate.getForObject(storyItemDetailsEndpoint, HackerNewsItemRecord.class);
-            if (hackerNewsItemRecord == null) { continue; }
+            // Verificar se existe e se o URL existe
+            if (hackerNewsItemRecord == null || hackerNewsItemRecord.url() == null) { continue; }
+            System.out.println("News number " + i + ": " + hackerNewsItemRecord.title() + " - " + hackerNewsItemRecord.url());
             // Verificar se contem os searchTerms
             List<String> searchTermsList = List.of(search.toLowerCase().split(" "));
-            // TODO: Fazer para o texto do url e não para o titulo
-            // Se sim adicionar à lista
-            if (searchTermsList.stream().anyMatch(hackerNewsItemRecord.title().toLowerCase()::contains)) {
-                hackerNewsItemRecordList.add(hackerNewsItemRecord);
-                ca.indexURL(hackerNewsItemRecord.url());
+            try {
+                // Aceder ao url
+                String doc = Jsoup.connect(hackerNewsItemRecord.url()).get().text();
+                // Se sim adicionar à lista
+                if (searchTermsList.stream().anyMatch(doc.toLowerCase()::contains)) {
+                    System.out.println("Found!");
+                    hackerNewsItemRecordList.add(hackerNewsItemRecord);
+                }
+            } catch (Exception e){
+                continue;
             }
         }
         // Mandar em formato JSON
