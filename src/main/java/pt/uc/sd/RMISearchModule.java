@@ -115,6 +115,31 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
         elements.put("B" + id, new BarrelElement(id, port, active));
     }
 
+    //https://www.geeksforgeeks.org/sorting-hashmap-according-key-value-java/
+    public void printTop10() throws  RemoteException {
+        // Create a list from elements of HashMap
+        try{
+            List<Map.Entry<String, Integer> > list = new LinkedList<Map.Entry<String, Integer> >(this.searches.entrySet());
+
+            // Sort the list using lambda expression
+            Collections.sort(list, (i1, i2) -> i2.getValue().compareTo(i1.getValue()));
+
+            // put data from sorted list to hashmap
+            HashMap<String, Integer> temp = new LinkedHashMap<String, Integer>();
+            ClientPrint cp = (ClientPrint) LocateRegistry.getRegistry(7001).lookup("client");
+
+            int count = 0;
+            for (Map.Entry<String, Integer> aa : list) {
+                if(count++ == 10)
+                    break;
+                cp.print("- " + aa.getKey());
+                temp.put(aa.getKey(), aa.getValue());
+            }
+        }
+        catch (NotBoundException e){
+            throw new RuntimeException(e);
+        }
+    }
     public void printSystemDetails() throws RemoteException{
         try {
             // Gets the registry for the client print
@@ -123,15 +148,23 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
             cp.print("Estado do sistema:");
             for(SystemElements se : elements.values()){
                 cp.print(se.toString());
+                if(se.isInactive()){
+                    //checkpoint inactive
+                }
             }
             // Top 10 Searches
+            //private final HashMap<String, Integer> searches = new HashMap<>();
             cp.print("\nTop 10 pesquisas:");
+
+            printTop10();
+            /*
             int count = 0;
             for(String s : searches.keySet()){
                 if(count++ == 10)
                     break;
                 cp.print("- " + s);
             }
+            */
 
         } catch (NotBoundException e) {
             throw new RuntimeException(e);

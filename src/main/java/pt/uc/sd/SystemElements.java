@@ -10,4 +10,10 @@ public class SystemElements {
         this.port = port;
         this.active = active;
     }
+
+    public boolean isInactive() {
+        if(this.active)
+            return false;
+        return true;
+    }
 }
