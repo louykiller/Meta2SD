@@ -27,12 +27,6 @@ public class MessagingController {
     @Autowired
     private SimpMessagingTemplate template;
 
-
-    public void newUpdate() {
-        System.out.println("TEST");
-        this.template.convertAndSend("/search/update", new Message("TEST"));
-    }
-
 	// Função que vai receber os search terms mandados para /searchEngine/searchTerms e
     // devolve os resultados pelo "canal" /search/results
     @MessageMapping("/searchTerms")
@@ -51,19 +45,11 @@ public class MessagingController {
         ca.indexURL(url.content());
     }
 
-    // Função que atualiza a cada 5 segundos os elementos
-    @Scheduled(fixedRate = 5000)
-    public void fireGreeting() throws RemoteException, NotBoundException {
-        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
-        ArrayList<String> systemDetails = ca.getSystemDetails();
-        ArrayList<String> topSearches = ca.getTopSearches();
-        this.template.convertAndSend("/search/system", new Details(systemDetails, topSearches));
-    }
     // Função que vai receber os pedidos de update mandados para /searchEngine/systemDetails e
     // devolve os resultados pelo "canal" /search/update
     @MessageMapping("/systemDetails")
     @SendTo("/search/system")
-    public Details updateSystemDetails(Message message) throws InterruptedException, RemoteException, NotBoundException {
+    public Details systemDetails(Message message) throws InterruptedException, RemoteException, NotBoundException {
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         ArrayList<String> systemDetails = ca.getSystemDetails();
         ArrayList<String> topSearches = ca.getTopSearches();
@@ -179,10 +165,13 @@ public class MessagingController {
         return new UserInfo(u.name, u.username, null, "register");
     }
 
-    @SendTo("/search/update")
-    public Message newUpdate(Message message) throws InterruptedException {
-
-        return new Message("Update!");
+    // Função que atualiza a cada 5 segundos os elementos
+    @Scheduled(fixedRate = 5000)
+    public void updateSystemDetails() throws RemoteException, NotBoundException {
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        ArrayList<String> systemDetails = ca.getSystemDetails();
+        ArrayList<String> topSearches = ca.getTopSearches();
+        this.template.convertAndSend("/search/system", new Details(systemDetails, topSearches));
     }
 
 }
