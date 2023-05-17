@@ -147,4 +147,10 @@ public class MessagingController {
         return new UserInfo(u.name, u.username, null, "register");
     }
 
+    @SendTo("/search/update")
+    public Message newUpdate(Message message) throws InterruptedException {
+
+        return new Message("Update!");
+    }
+
 }
