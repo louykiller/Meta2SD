@@ -5,8 +5,11 @@ import com.google.gson.JsonObject;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,6 +23,15 @@ import java.util.List;
 
 @Controller
 public class MessagingController {
+
+    @Autowired
+    private SimpMessagingTemplate template;
+
+
+    public void newUpdate() {
+        System.out.println("TEST");
+        this.template.convertAndSend("/search/update", new Message("TEST"));
+    }
 
 	// Função que vai receber os search terms mandados para /searchEngine/searchTerms e
     // devolve os resultados pelo "canal" /search/results
@@ -39,6 +51,14 @@ public class MessagingController {
         ca.indexURL(url.content());
     }
 
+    // Função que atualiza a cada 5 segundos os elementos
+    @Scheduled(fixedRate = 5000)
+    public void fireGreeting() throws RemoteException, NotBoundException {
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        ArrayList<String> systemDetails = ca.getSystemDetails();
+        ArrayList<String> topSearches = ca.getTopSearches();
+        this.template.convertAndSend("/search/system", new Details(systemDetails, topSearches));
+    }
     // Função que vai receber os pedidos de update mandados para /searchEngine/systemDetails e
     // devolve os resultados pelo "canal" /search/update
     @MessageMapping("/systemDetails")
@@ -51,7 +71,7 @@ public class MessagingController {
     }
 
     @MessageMapping("/getNews")
-    @SendTo("/search/news")
+    @SendTo("/search/update")
     public Message getNews(Message searchTerms) throws InterruptedException, IOException, NotBoundException {
         String search = searchTerms.content();
         if (search == null) {
@@ -62,11 +82,10 @@ public class MessagingController {
         RestTemplate restTemplate = new RestTemplate();
         List hackerNewsNewTopStories = restTemplate.getForObject(topStoriesEndpoint, List.class);
         assert hackerNewsNewTopStories != null;
-
-        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
         // Guardar todas as stories que tenham os searchTerms
         List<HackerNewsItemRecord> hackerNewsItemRecordList = new ArrayList<>();
-        for (int i = 0; i <= hackerNewsNewTopStories.size(); i++) {
+        int count = 0;
+        for (int i = 0; i < hackerNewsNewTopStories.size(); i++) {
             // Fazer so as primeiras 50
             if(i == 50) break;
             // Ir buscar o URL da story
@@ -85,14 +104,23 @@ public class MessagingController {
                 if (searchTermsList.stream().anyMatch(doc.toLowerCase()::contains)) {
                     System.out.println("Found!");
                     hackerNewsItemRecordList.add(hackerNewsItemRecord);
+                    // Parar depois de 10 resultados encontrados
+                    count++;
+                    if(count == 10) break;
                 }
             } catch (Exception e){
                 continue;
             }
         }
+        ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");
+        for(HackerNewsItemRecord story : hackerNewsItemRecordList){
+            ca.indexURL(story.url());
+        }
+        if(hackerNewsItemRecordList.size() == 0){
+            return new Message("No stories found relative to '" + search + "'.");
+        }
         // Mandar em formato JSON
-        String json = new Gson().toJson(hackerNewsItemRecordList);
-        return new Message(json);
+        return new Message(hackerNewsItemRecordList.size() + " stories were indexed relative to '" + search + "'.");
     }
 
     @MessageMapping("/indexStories")
@@ -108,6 +136,7 @@ public class MessagingController {
         System.out.println(user.submitted().size());
         // Ir buscar todas as stories
         List<HackerNewsItemRecord> hackerNewsItemRecordList = new ArrayList<>();
+        int count = 0;
         for (int i = 0; i < user.submitted().size(); i++) {
             // Ir buscar o URL da story
             Integer storyId = (Integer) user.submitted().get(i);
@@ -117,6 +146,9 @@ public class MessagingController {
             if (hackerNewsItemRecord == null || !hackerNewsItemRecord.type().equals("story") || hackerNewsItemRecord.url() == null) { continue; }
             hackerNewsItemRecordList.add(hackerNewsItemRecord);
             System.out.println("Added story: " + hackerNewsItemRecord.title());
+            // Parar depois de 10 resultados encontrados
+            count++;
+            if(count == 10) break;
         }
         // Indexar todos
         ServerActions ca = (ServerActions) LocateRegistry.getRegistry(7000).lookup("server");

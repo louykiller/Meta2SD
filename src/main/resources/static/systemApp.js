@@ -18,6 +18,10 @@ function connect() {
             // Chama a função userAction cada vez que recebe uma mensagem
             userAction(JSON.parse(message.body))
         });
+        stompClient.subscribe('/search/update', function (message) {
+            // Chama a função newUpdate cada vez que recebe uma mensagem
+            newUpdate(JSON.parse(message.body).content)
+        });
     });
 }
 
@@ -106,15 +110,25 @@ function loggedIn(name){
 }
 
 function systemDetails(details){
-    console.log(details);
+    $(".details_list").empty();
     for(let detail of details["systemDetails"]){
         $(".details_list").append('<li class="detail_item">' + detail + '</li>');
     }
+    $(".top_list").empty();
     let i = 0;
     for(let search of details["topSearches"]){
         if(i++ == 10) break;
         $(".top_list").append('<li class="top_item"><a href="./searchpage.html?searchTerms=' + search + '">' + search + '</a></li>');
     }
+}
+
+function newUpdate(update){
+    Swal.fire({
+        title:'New Update!',
+        text: update,
+        icon: 'info',
+        confirmButtonText: 'Ok'
+    });
 }
 
 

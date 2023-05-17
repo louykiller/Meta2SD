@@ -144,6 +144,7 @@ public class RMISearchModule extends UnicastRemoteObject implements ServerAction
             systemElements.add(entry.toString());
         }
         Collections.sort(systemElements);
+
         return systemElements;
     }
 

@@ -23,8 +23,8 @@ function connect() {
         });
         // Subscreve este "canal" para receber as news
         stompClient.subscribe('/search/news', function (message) {
-            // Chama a função getNews cada vez que recebe uma mensagem
-            getNews(JSON.parse(message.body).content)
+            // Chama a função indexNews cada vez que recebe uma mensagem
+            indexNews(JSON.parse(message.body).content)
         });
         // Subscreve este "canal" para gerir o user
         stompClient.subscribe('/search/user', function (message) {
@@ -128,7 +128,6 @@ function search() {
     }
     // ir buscar os search terms para fazer a pesquisa
     stompClient.send("/searchEngine/searchTerms", {}, JSON.stringify({'content': $("#searchBar").val()}));
-    stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
 }
 
 function updateResults(current){
@@ -200,21 +199,19 @@ function newUpdate(update){
         icon: 'info',
         confirmButtonText: 'Ok'
       })
-
 }
 
-function getNews(news){
-    hackerNews = JSON.parse(news);
-    console.log(hackerNews);
-}
-
-function indexNews(){
-    if(hackerNews.length > 0){
-        for(const news of hackerNews){
-            stompClient.send("/searchEngine/indexURL", {}, JSON.stringify({'content': news["url"]}));
-        }
+function getNews(){
+    if($("#searchBar").val().length > 0){
+    stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
+    Swal.fire({
+        title:"The Top Stories relative to '" + $("#searchBar").val() + "' will be indexed!",
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
     }
 }
+
 
 
 $(function () {
@@ -236,6 +233,9 @@ $(function () {
         loggedIn(user);
     }
 
+    $(" #indexNews ").click(function (e){
+        getNews();
+    });
     $( "#login" ).on("submit", function(e) {
         e.preventDefault();
         login();

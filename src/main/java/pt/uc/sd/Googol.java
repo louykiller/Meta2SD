@@ -2,11 +2,13 @@ package pt.uc.sd;// Main class que vai iniciar todas as outras classes incluindo
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.*;
 import java.rmi.RemoteException;
 import java.util.*;
 
+@EnableScheduling
 @SpringBootApplication
 public class Googol {
 

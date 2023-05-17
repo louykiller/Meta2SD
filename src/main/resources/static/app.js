@@ -131,7 +131,7 @@ async function index() {
     // Se for um username
     else {
         Swal.fire({
-            title:'All the stories of ' + input + ' will be indexed',
+            title: "All the stories from '" + input + "' will be indexed",
             icon: 'info',
             confirmButtonText: 'Ok'
         });
