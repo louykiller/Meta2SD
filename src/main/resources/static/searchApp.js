@@ -44,17 +44,21 @@ function disconnect() {
 }
 
 function login(){
+    // Vai buscar as credenciais do user
     const username = $( "#usernameLogin" ).val();
     const password = $( "#passwordLogin" ).val();
     let json = {'username': username, 'password': password};
+    // Manda as credenciais para o canal de login
     stompClient.send("/searchEngine/login", {}, JSON.stringify(json));
 }
 
 function register(){
+    // Vai buscar as credenciais do user
     const name = $( "#first_name" ).val() + ' ' + $( "#last_name" ).val();
     const username = $( "#username" ).val();
     const password1 = $( "#password1" ).val();
     const password2 = $( "#password2" ).val();
+    // Verifica se as passwords coincidem, se não avisa o user
     if(password1 !== password2){
        Swal.fire({
         title: 'Passwords dont match!',
@@ -62,16 +66,18 @@ function register(){
         confirmButtonText: 'Ok'
       })
     }
+    // Manda as credenciais para o canal de register
     else{
         let json = {'name': name, 'username': username, 'password': password1};
         stompClient.send("/searchEngine/register", {}, JSON.stringify(json));
     }
 }
 
-// TODO: POR POP UPS BONITOS EM VEZ DE ALERTS
+// Recebe as ações do user
 function userAction(user){
-    console.log(user);
+    // Se for uma ação de login
     if(user["action"] == "login"){
+        // Se for null significa que as credenciais estão erradas
         if(user["username"] == null){
             Swal.fire({
                 title: 'Wrong credentials',
@@ -80,17 +86,21 @@ function userAction(user){
                 confirmButtonText: 'Ok'
               })
         }
+        // Senão faz login
         else {
             Swal.fire({
                 title: 'Welcome back ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
+            // Fecha o pop-up e faz log in do user
             $('.close-btn').trigger('click');
             loggedIn(user["name"]);
         }
     }
+    // Se for uma ação de register
     else {
+        // Se for null significa que o username ja está em uso
         if(user["username"] == null){
             Swal.fire({
                 title: 'Username already in use',
@@ -99,28 +109,44 @@ function userAction(user){
                 confirmButtonText: 'Ok'
               })
         }
+        // Senão faz register
         else {
             Swal.fire({
                 title: 'Welcome ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
+            // Fecha o pop-up e faz log in do user
             $('.close-btn-register').trigger('click');
             loggedIn(user["name"]);
-            
         }
     }
 }
 
+// Função para alterar visualmente o site quando o user faz login
 function loggedIn(name){
+    // Retira os botões de login e register
     $("#loggedOff").css("visibility", "hidden");
+    // Mostra o icon do perfil com o seu nome
     $("#loggedIn").css("visibility", "visible");
     $("#name").text(name);
     localStorage.setItem("name", name);
+    // Altera a visibilidade dos botões parentURLs
+    $(".parentButton").css("visibility", "visible");
 }
 
+function newUpdate(update){
+    // Alertar quando tem um update
+    Swal.fire({
+        title:"New Update!",
+        text: update,
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
+}
 
 function search() {
+    // Se for uma pesquisa vazia
     if($("#searchBar").val() == ""){
         $("#previous").css("visibility", "hidden");
         $("#next").css("visibility", "hidden");
@@ -151,16 +177,38 @@ function updateResults(current){
     $(".link").empty();
     for(let i = (current - 1) * 10; i < ( (current - 1) * 10) + 10 && i < currentResults.length; i++){
         const r = currentResults[i];
-        $(".link").append('<a class="title" href="' + r["url"] + '"><p>' + r["url"] + '</p>' +
+        $(".link").append('<div id="link' + i + '" style="display: flex; align-items: center; justify-content: space-between;"></div>')
+        $("#link" + i).append('<div> <a class="title" href="' + r["url"] + '"><p>' + r["url"] + '</p>' +
                           '<h2>' + r["title"] + '</h2></a>' +
-                          '<p class="citation">' + r["citation"] + '</p>');
-        /*
-        <a class="title" href="https://ucstudent.uc.pt/"><p>https://ucstudent.uc.pt/</p>
-        <h2>UC Student - Universidade de Coimbra</h2></a>
-        <p class="citation">Citation</p>
-        */
+                          '<p class="citation">' + r["citation"] + '</p></div>');
+        $("#link" + i).append('<button class="parentButton" id="parents' + i + '" style="margin-left: 12px; min-width: fit-content;">Parent URLs</button>');
+        // Adicionar uma função aos botões para ver os parentURLs
+        $("#parents" + i).click(function (e){
+            getParentUrls(i);
+        });
     }
+    // Se o user estiver logged in então mostra os botões
+    if(localStorage.getItem("name") != null){
+        $(".parentButton").css("visibility", "visible");
+    }
+    // Altera a page
     page = current;
+}
+
+// Função para mostrar um pop-up com os parentURLs
+function getParentUrls(index){
+    // Coloca os urls em formato html
+    const parentUrls = currentResults[index]["parentUrls"];
+    var string = "";
+    for(var p of parentUrls){
+        string += '<a href="' + p + '">' + p + '</a><br>';
+    }
+    // Pop-up
+    Swal.fire({
+        title:"Parent URLs",
+        html: string,
+        confirmButtonText: 'Ok'
+      })
 }
 
 // Função que recebe os resultados da pesquisa
@@ -169,15 +217,13 @@ function showResults(result) {
     // Guardar os novos resultados
     currentResults = res;
     page = 1;
+    // Atualiza a maxPage
     maxPage = parseInt((res.length - 1) / 10) + 1;
-    // Alterar o resultsCount
-    if(res.length == 0){
-        $("#resultsCount").text("0 resultados encontrados");
-        $("#previous").css("visibility", "hidden");
-        $("#next").css("visibility", "hidden");
-    } else {
-        $("#resultsCount").text(res.length + " resultados encontrados");
-        $(".numbers").empty();
+    // Alterar o resultsCount e items de navegação se não houver resultados
+    $("#resultsCount").text(res.length + " resultados encontrados");
+    $(".numbers").empty();
+    // Se houver resultados adicionar o numero de paginas
+    if(res.length != 0){
         // Adicionar o numero de paginas necessárias
         for(let i = 0; i < maxPage; i++){
             const n = i + 1;
@@ -186,23 +232,15 @@ function showResults(result) {
                 updateResults(n);
             });
         }
-        updateResults(page);
     }
-}
-
-
-function newUpdate(update){
-    // Alertar quando tem um update
-    Swal.fire({
-        title:"New Update!",
-        text: update,
-        icon: 'info',
-        confirmButtonText: 'Ok'
-      })
+    // Atualizar os resultados
+    updateResults(page);
 }
 
 function getNews(){
+    // Se houver alguma pesquisa
     if($("#searchBar").val().length > 0){
+    // Enviar para o canal getNews e notificar o user
     stompClient.send("/searchEngine/getNews", {}, JSON.stringify({'content': $("#searchBar").val()}));
     Swal.fire({
         title:"The Top Stories relative to '" + $("#searchBar").val() + "' will be indexed!",
@@ -212,10 +250,7 @@ function getNews(){
     }
 }
 
-
-
 $(function () {
-    // Conectar
     connect();
     // Ir buscar os parametros
     const queryString = window.location.search;
@@ -246,17 +281,11 @@ $(function () {
     });
     $(".logOut").click(function (e){
         localStorage.removeItem("name");
-        Swal.fire({
-            title:"Logged Out!",
-            icon: 'info',
-            confirmButtonText: 'Ok'
-          })
     });
 
     $("#previous").click(function (e){
         updateResults(page - 1);
     });
-
     $("#next").click(function (e){
         updateResults(page + 1);
     });

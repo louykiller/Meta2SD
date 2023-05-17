@@ -35,34 +35,40 @@ function disconnect() {
 }
 
 function login(){
+    // Vai buscar as credenciais do user
     const username = $( "#usernameLogin" ).val();
     const password = $( "#passwordLogin" ).val();
     let json = {'username': username, 'password': password};
+    // Manda as credenciais para o canal de login
     stompClient.send("/searchEngine/login", {}, JSON.stringify(json));
 }
 
 function register(){
+    // Vai buscar as credenciais do user
     const name = $( "#first_name" ).val() + ' ' + $( "#last_name" ).val();
     const username = $( "#username" ).val();
     const password1 = $( "#password1" ).val();
     const password2 = $( "#password2" ).val();
+    // Verifica se as passwords coincidem, se não avisa o user
     if(password1 !== password2){
-        Swal.fire({
-            title: 'Passwords dont match!',
-            icon: 'info',
-            confirmButtonText: 'Ok'
-          })
+       Swal.fire({
+        title: 'Passwords dont match!',
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
     }
+    // Manda as credenciais para o canal de register
     else{
         let json = {'name': name, 'username': username, 'password': password1};
-        console.log(json);
         stompClient.send("/searchEngine/register", {}, JSON.stringify(json));
     }
 }
 
+// Recebe as ações do user
 function userAction(user){
-    console.log(user);
+    // Se for uma ação de login
     if(user["action"] == "login"){
+        // Se for null significa que as credenciais estão erradas
         if(user["username"] == null){
             Swal.fire({
                 title: 'Wrong credentials',
@@ -71,17 +77,21 @@ function userAction(user){
                 confirmButtonText: 'Ok'
               })
         }
+        // Senão faz login
         else {
             Swal.fire({
                 title: 'Welcome back ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
+            // Fecha o pop-up e faz log in do user
             $('.close-btn').trigger('click');
             loggedIn(user["name"]);
         }
     }
+    // Se for uma ação de register
     else {
+        // Se for null significa que o username ja está em uso
         if(user["username"] == null){
             Swal.fire({
                 title: 'Username already in use',
@@ -90,30 +100,47 @@ function userAction(user){
                 confirmButtonText: 'Ok'
               })
         }
+        // Senão faz register
         else {
             Swal.fire({
                 title: 'Welcome ' + user["name"],
                 icon: 'success',
                 confirmButtonText: 'Ok'
               })
+            // Fecha o pop-up e faz log in do user
             $('.close-btn-register').trigger('click');
             loggedIn(user["name"]);
         }
     }
 }
 
+// Função para alterar visualmente o site quando o user faz login
 function loggedIn(name){
+    // Retira os botões de login e register
     $("#loggedOff").css("visibility", "hidden");
+    // Mostra o icon do perfil com o seu nome
     $("#loggedIn").css("visibility", "visible");
     $("#name").text(name);
     localStorage.setItem("name", name);
 }
 
+function newUpdate(update){
+    // Alertar quando tem um update
+    Swal.fire({
+        title:"New Update!",
+        text: update,
+        icon: 'info',
+        confirmButtonText: 'Ok'
+      })
+}
+
 function systemDetails(details){
+    // Atualiza a lista dos detalhes de sistema
     $(".details_list").empty();
     for(let detail of details["systemDetails"]){
         $(".details_list").append('<li class="detail_item">' + detail + '</li>');
     }
+    // Atualiza a lista das topSearches
     $(".top_list").empty();
     let i = 0;
     for(let search of details["topSearches"]){
@@ -122,18 +149,10 @@ function systemDetails(details){
     }
 }
 
-function newUpdate(update){
-    Swal.fire({
-        title:'New Update!',
-        text: update,
-        icon: 'info',
-        confirmButtonText: 'Ok'
-    });
-}
-
 
 $(function () {
     connect();
+    // Fazer o pedido de systemDetails
     setTimeout(() => { stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': 'details please'})); }, 200);
 
      // Check if user is logged in
@@ -145,7 +164,6 @@ $(function () {
     $( "#details" ).click(function (e) {
         // Abrir a página de detalhes do sistema
         stompClient.send("/searchEngine/systemDetails", {}, JSON.stringify({'content': "updates please"}));
-
     });
     $( "#login" ).on("submit", function(e) {
         e.preventDefault();
@@ -157,11 +175,6 @@ $(function () {
     });
     $(".logOut").click(function (e){
         localStorage.removeItem("name");
-        Swal.fire({
-            title:"Logged Out!",
-            icon: 'info',
-            confirmButtonText: 'Ok'
-          })
     });
 
     /* mostrar e sair do popup do log in*/
